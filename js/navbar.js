@@ -1,53 +1,38 @@
-/**
- * navbar.js
- * Controls the animated pill indicator and active
- * states on the bottom navigation bar.
- */
-
 const NavBar = (() => {
 
-  let pill        = null;
-  let navItems    = [];
-  let activeItem  = null;
+  let pill       = null;
+  let track      = null;
+  let navItems   = [];
+  let activeItem = null;
 
-  /**
-   * Calculate the pill geometry for a given nav item
-   * and smoothly move it there.
-   */
+  const PILL_WIDTH = 72;
+
   function movePillTo(item) {
-    if (!pill || !item) return;
-
-    const track    = document.getElementById('nav-track');
+    if (!pill || !track || !item) return;
     const trackRect = track.getBoundingClientRect();
     const itemRect  = item.getBoundingClientRect();
-
-    const pillW = 72;   /* fixed width — same for every tab */
-    const pillH = 46;
-
-    // Centre on the item relative to the track
-    const centreX  = itemRect.left + itemRect.width / 2 - trackRect.left;
-    const pillLeft = Math.round(centreX - pillW / 2);
-
-    pill.style.width  = `${pillW}px`;
-    pill.style.height = `${pillH}px`;
-    pill.style.left   = `${pillLeft}px`;
+    const centreX   = itemRect.left + itemRect.width / 2 - trackRect.left;
+    const pillLeft  = Math.round(centreX - PILL_WIDTH / 2);
+    pill.style.width = `${PILL_WIDTH}px`;
+    pill.style.left  = `${pillLeft}px`;
   }
 
-  /**
-   * Set a nav item as active (visually).
-   */
   function setActive(item) {
+    if (!item) return;
     if (activeItem) activeItem.classList.remove('active');
     item.classList.add('active');
     activeItem = item;
     movePillTo(item);
   }
 
-  /**
-   * Initialise: bind click handlers, position pill.
-   */
+  function setActiveByTarget(target) {
+    const item = navItems.find(i => i.dataset.target === target);
+    if (item) setActive(item);
+  }
+
   function init() {
     pill     = document.getElementById('nav-pill');
+    track    = document.getElementById('nav-track');
     navItems = Array.from(document.querySelectorAll('.nav-item'));
 
     navItems.forEach(item => {
@@ -55,7 +40,6 @@ const NavBar = (() => {
         const target = item.dataset.target;
 
         if (target === 'log') {
-          // Log tab opens sheet — don't navigate pages
           setActive(item);
           LogSheet.open();
           return;
@@ -66,28 +50,19 @@ const NavBar = (() => {
       });
     });
 
-    // Set initial position (home tab)
-    activeItem = navItems.find(i => i.dataset.target === 'home') || navItems[0];
+    const initialActive = navItems.find(i => i.classList.contains('active')) || navItems[0];
+    navItems.forEach(i => i.classList.remove('active'));
+    activeItem = initialActive;
     activeItem.classList.add('active');
 
-    // Wait one frame so layout is settled, then position pill
     requestAnimationFrame(() => {
       movePillTo(activeItem);
-      // Fade pill in after first position is set
       requestAnimationFrame(() => {
         pill.classList.add('ready');
       });
     });
 
-    // Reposition on resize (orientation change etc.)
-    window.addEventListener('resize', () => {
-      movePillTo(activeItem);
-    });
-  }
-
-  function setActiveByTarget(target) {
-    const item = navItems.find(i => i.dataset.target === target);
-    if (item) setActive(item);
+    window.addEventListener('resize', () => movePillTo(activeItem));
   }
 
   return { init, setActive, setActiveByTarget, movePillTo };
