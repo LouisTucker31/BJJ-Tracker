@@ -546,39 +546,39 @@
 .tech-select-wrap {
   position: relative;
   width: 100%;
+  margin-bottom: 4px;
 }
 
-.tech-select-wrap::after {
-  content: '';
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 6px solid rgba(60,60,67,0.4);
-  pointer-events: none;
-}
-
-.tech-select {
-  width: 100%;
-  padding: 13px 40px 13px 16px;
-  background: var(--color-bg-secondary, #f2f2f7);
+.tech-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(0, 122, 255, 0.10);
   border: none;
-  border-radius: 12px;
-  font-size: 15px;
-  font-family: var(--font-system);
-  color: var(--color-label-secondary, rgba(60,60,67,0.6));
-  appearance: none;
-  -webkit-appearance: none;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #007AFF;
   cursor: pointer;
-  outline: none;
+  font-family: var(--font-system);
+  -webkit-tap-highlight-color: transparent;
+  transition: background 150ms ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .tech-select { background: #2c2c2e; color: rgba(235,235,245,0.6); }
+.tech-add-btn:active {
+  background: rgba(0, 122, 255, 0.18);
+}
+
+.tech-select-hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 /* ─── Selected technique tiles ───────────────────── */
@@ -638,3 +638,24 @@
   transform: translateY(0);
 }
 
+/* ─── Primary button ─────────────────────────────── */
+.primary-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 16px;
+  background: #007AFF;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-system);
+  transition: opacity 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+  display: block;
+}
+
+.primary-btn:active {
+  opacity: 0.8;
+}
