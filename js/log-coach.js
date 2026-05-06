@@ -11,8 +11,8 @@ const LogCoach = (() => {
   const ICONS = {
     male:   '👨',
     female: '👩',
-    belt:   '🥋',
-    star:   '⭐'
+    shirt:  '🎽',
+    medal:  '🎖️'
   };
 
   // ─── Render saved coaches ─────────────────────────

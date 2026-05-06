@@ -130,6 +130,14 @@
   stroke: #fff;
 }
 
+.session-tile-icon--emoji {
+  font-size: 24px;
+  background: none !important;
+  margin-bottom: 28px;
+  width: auto;
+  height: auto;
+}
+
 /* Rolling — blue */
 .session-tile--rolling .session-tile-icon { background: #007AFF; }
 /* Coaching — green */
@@ -208,6 +216,13 @@
   width: 20px;
   height: 20px;
   stroke: #007AFF;
+}
+
+.format-tile-icon--emoji {
+  font-size: 22px;
+  background: none !important;
+  width: auto;
+  height: auto;
 }
 
 .format-tile-text {
@@ -570,6 +585,25 @@
   background: rgba(0, 122, 255, 0.18);
 }
 
+.tech-add-btn--applied {
+  background: rgba(255, 59, 48, 0.10);
+  color: #FF3B30;
+}
+
+.tech-add-btn--applied:active {
+  background: rgba(255, 59, 48, 0.18);
+}
+
+.tech-tile.tech-tile--applied {
+  background: rgba(255, 59, 48, 0.06);
+  border: 1px solid rgba(255, 59, 48, 0.18);
+  color: #FF3B30;
+}
+
+.tech-tile.tech-tile--applied .tech-tile-remove {
+  color: rgba(255, 59, 48, 0.5);
+}
+
 .tech-select-hidden {
   position: absolute;
   top: 0;
@@ -603,27 +637,15 @@
 }
 
 .tech-tile-remove {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(60, 60, 67, 0.12);
+  background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 0 0 0 8px;
   flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-label-tertiary, rgba(60,60,67,0.3));
   -webkit-tap-highlight-color: transparent;
-}
-
-.tech-tile-remove svg {
-  width: 9px;
-  height: 9px;
-  stroke: var(--color-label-secondary, rgba(60,60,67,0.6));
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
 }
 
 .technique-dropdown.hidden {

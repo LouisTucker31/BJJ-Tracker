@@ -11,7 +11,7 @@ const LogAcademy = (() => {
   const ICONS = {
     dojo:     '🥋',
     pin:      '📍',
-    star:     '⭐',
+    home:     '🏠',
     building: '🏛️',
     shield:   '🛡️'
   };

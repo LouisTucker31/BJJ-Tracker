@@ -263,14 +263,10 @@ const TechniquePicker = (() => {
     tilesEl.innerHTML = '';
     list.forEach(tech => {
       const tile = document.createElement('div');
-      tile.className = 'tech-tile';
+      tile.className = 'tech-tile' + (section === 'applied' ? ' tech-tile--applied' : '');
       tile.innerHTML = `
         <span>${tech.name}</span>
-        <button class="tech-tile-remove" aria-label="Remove ${tech.name}">
-          <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1l8 8M9 1L1 9" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
+        <button class="tech-tile-remove" aria-label="Remove ${tech.name}">×</button>
       `;
       tile.querySelector('.tech-tile-remove').addEventListener('click', () => {
         removeTechnique(section, tech.id);

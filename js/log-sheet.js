@@ -29,13 +29,21 @@ const LogSheet = (() => {
 
   function close() {
     sheetOpen = false;
+    isSaved   = false;
     sheet.classList.remove('open');
     backdrop.classList.remove('visible');
     document.body.style.overflow = '';
     NavBar.setActiveByTarget(previousPage);
-    setTimeout(() => LogPages.reset(), 450);
+    setTimeout(() => {
+      LogPages.reset();
+      TechniquePicker.reset();
+      LogDetails.reset();
+      LogAcademy.reset();
+      LogCoach.reset();
+      window._logSessionType = '';
+      window._logFormatType  = '';
+    }, 450);
   }
-
   function isOpen() {
     return sheetOpen;
   }

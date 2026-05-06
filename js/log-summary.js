@@ -9,8 +9,8 @@ const LogSummary = (() => {
   const ENERGY_LABELS  = { 1: 'Exhausted', 2: 'Low', 3: 'Neutral', 4: 'Good', 5: 'Fired Up' };
   const INTENSITY_LABELS = { light: 'Light', moderate: 'Moderate', hard: 'Hard' };
   const GI_LABELS        = { gi: 'Gi', nogi: 'No-Gi' };
-  const ACADEMY_ICONS    = { dojo: '🥋', pin: '📍', star: '⭐', building: '🏛️', shield: '🛡️' };
-  const COACH_ICONS      = { male: '👨', female: '👩', belt: '🥋', star: '⭐' };
+  const ACADEMY_ICONS    = { dojo: '🥋', pin: '📍', home: '🏠', building: '🏛️', shield: '🛡️' };
+  const COACH_ICONS      = { male: '👨', female: '👩', shirt: '🎽', medal: '🎖️' };
 
   // ─── Format date ──────────────────────────────────
   function formatDate(dateStr) {
@@ -99,16 +99,6 @@ const LogSummary = (() => {
       if (coachRow) coachRow.style.display = '';
     } else {
       if (coachRow) coachRow.style.display = 'none';
-    }
-
-    // ── Notes ──
-    const notesSection = document.getElementById('sum-notes-section');
-    const notesEl      = document.getElementById('sum-notes');
-    if (details.notes) {
-      if (notesEl)      notesEl.textContent = details.notes;
-      if (notesSection) notesSection.style.display = '';
-    } else {
-      if (notesSection) notesSection.style.display = 'none';
     }
 
     // ── Drilled ──
