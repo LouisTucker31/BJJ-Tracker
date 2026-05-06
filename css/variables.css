@@ -24,9 +24,9 @@
   --nav-pill-bg:           rgba(255, 255, 255, 0.90);  /* inner active pill — white glass */
   --nav-outer-pill-bg:     rgba(255, 255, 255, 0.78);  /* floating pill bar */
   --nav-outer-pill-border: rgba(255, 255, 255, 0.95);  /* top highlight edge */
-  --nav-outer-pill-shadow: 0 8px 32px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.06);
+  --nav-outer-pill-shadow: 0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05), 0 0 0 0.5px rgba(0,0,0,0.04);
   --nav-height:            83px;
-  --nav-inner-height:      72px;   /* taller to fit pill shape comfortably */
+  --nav-inner-height:      76px;
 
   /* ─── Radii ──────────────────────────────────── */
   --radius-sm:   8px;
@@ -79,6 +79,6 @@
     --nav-pill-bg:           rgba(255, 255, 255, 0.14);
     --nav-outer-pill-bg:     rgba(36, 36, 40, 0.88);
     --nav-outer-pill-border: rgba(255, 255, 255, 0.10);
-    --nav-outer-pill-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.30), 0 0 0 0.5px rgba(255,255,255,0.06);
+    --nav-outer-pill-shadow: 0 4px 16px rgba(0,0,0,0.28), 0 1px 4px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(255,255,255,0.04);
   }
 }
