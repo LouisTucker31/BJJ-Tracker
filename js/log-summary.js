@@ -5,43 +5,19 @@
 
 const LogSummary = (() => {
 
-  const ENERGY_EMOJIS = { 1: '😴', 2: '😕', 3: '😐', 4: '😊', 5: '🔥' };
+  const ENERGY_EMOJIS  = { 1: '😴', 2: '😕', 3: '😐', 4: '😊', 5: '🔥' };
+  const ENERGY_LABELS  = { 1: 'Exhausted', 2: 'Low', 3: 'Neutral', 4: 'Good', 5: 'Fired Up' };
+  const INTENSITY_LABELS = { light: 'Light', moderate: 'Moderate', hard: 'Hard' };
+  const GI_LABELS        = { gi: 'Gi', nogi: 'No-Gi' };
+  const ACADEMY_ICONS    = { dojo: '🥋', pin: '📍', star: '⭐', building: '🏛️', shield: '🛡️' };
+  const COACH_ICONS      = { male: '👨', female: '👩', belt: '🥋', star: '⭐' };
 
-  const INTENSITY_LABELS = {
-    light:    'Light',
-    moderate: 'Moderate',
-    hard:     'Hard'
-  };
-
-  const GI_LABELS = {
-    gi:   'Gi',
-    nogi: 'No-Gi'
-  };
-
-  const ACADEMY_ICONS = {
-    dojo:     '🥋',
-    pin:      '📍',
-    star:     '⭐',
-    building: '🏛️',
-    shield:   '🛡️'
-  };
-
-  const COACH_ICONS = {
-    male:   '👨',
-    female: '👩',
-    belt:   '🥋',
-    star:   '⭐'
-  };
-
-  // ─── Format date nicely ───────────────────────────
+  // ─── Format date ──────────────────────────────────
   function formatDate(dateStr) {
     if (!dateStr) return '';
     const d = new Date(dateStr + 'T00:00:00');
     return d.toLocaleDateString('en-GB', {
-      weekday: 'long',
-      day:     'numeric',
-      month:   'long',
-      year:    'numeric'
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
     });
   }
 
@@ -55,29 +31,21 @@ const LogSummary = (() => {
     return m === 0 ? `${h}h` : `${h}h ${m}m`;
   }
 
-  // ─── Build title from session data ───────────────
-  function buildTitle(data) {
-    const gi        = GI_LABELS[data.gi] || '';
-    const type      = data.sessionType || 'Session';
-    return `${gi} ${type}`.trim();
-  }
-
   // ─── Render ───────────────────────────────────────
   function render() {
-    const details  = LogDetails.getValues();
-    const academy  = LogAcademy.getSelected();
-    const coach    = LogCoach.getSelected();
-    const drilled  = TechniquePicker.getDrilled();
-    const applied  = TechniquePicker.getApplied();
-
-    // Get session type from history (stored on format tile click)
+    const details     = LogDetails.getValues();
+    const academy     = LogAcademy.getSelected();
+    const coach       = LogCoach.getSelected();
+    const drilled     = TechniquePicker.getDrilled();
+    const applied     = TechniquePicker.getApplied();
     const sessionType = window._logSessionType || 'Rolling';
     const formatType  = window._logFormatType  || '';
 
-    // ── Hero ──
+    // ── Hero date ──
     const heroDate = document.getElementById('summary-hero-date');
     if (heroDate) heroDate.textContent = formatDate(details.date);
 
+    // ── Hero title ──
     const heroTitle = document.getElementById('summary-hero-title');
     if (heroTitle) {
       const gi = GI_LABELS[details.gi] || '';
@@ -87,26 +55,29 @@ const LogSummary = (() => {
     // ── Pills ──
     const pillsEl = document.getElementById('summary-hero-pills');
     if (pillsEl) {
+      const energyEmoji    = ENERGY_EMOJIS[details.energy]    || '😐';
+      const energyLabel    = ENERGY_LABELS[details.energy]    || 'Neutral';
+      const intensityLabel = INTENSITY_LABELS[details.intensity] || '';
+      const locationLabel  = academy?.location || null;
+
       const pills = [
-        { icon: '📅', label: formatDate(details.date).split(',')[0] },
+        locationLabel ? { icon: '📍', label: locationLabel } : null,
         { icon: '⏱️', label: formatDuration(details.duration) },
-        { icon: '⚡', label: INTENSITY_LABELS[details.intensity] || '' },
-        { icon: ENERGY_EMOJIS[details.energy] || '😐', label: '' }
-      ].filter(p => p.label || p.icon);
+        { icon: '⚡', label: intensityLabel },
+        { icon: energyEmoji, label: energyLabel }
+      ].filter(Boolean);
 
       pillsEl.innerHTML = pills.map(p => `
         <div class="summary-pill">
           <span class="summary-pill-icon">${p.icon}</span>
-          ${p.label ? `<span>${p.label}</span>` : ''}
+          <span>${p.label}</span>
         </div>
       `).join('');
     }
 
     // ── Stat tiles ──
-    setText('sum-type',      formatType || sessionType);
-    setText('sum-format',    GI_LABELS[details.gi] || '—');
-    setText('sum-intensity', INTENSITY_LABELS[details.intensity] || '—');
-    setText('sum-energy',    ENERGY_EMOJIS[details.energy] || '😐');
+    setText('sum-type',   formatType || sessionType);
+    setText('sum-format', GI_LABELS[details.gi] || '—');
 
     // ── Academy ──
     const academyRow = document.getElementById('sum-academy-row');
@@ -140,29 +111,25 @@ const LogSummary = (() => {
       if (notesSection) notesSection.style.display = 'none';
     }
 
-    // ── Drilled techniques ──
+    // ── Drilled ──
     const drilledSection = document.getElementById('sum-drilled-section');
     const drilledTags    = document.getElementById('sum-drilled-tags');
     if (drilled.length > 0) {
-      if (drilledTags) {
-        drilledTags.innerHTML = drilled.map(t =>
-          `<span class="summary-tech-tag summary-tech-tag--drilled">${t.name}</span>`
-        ).join('');
-      }
+      if (drilledTags) drilledTags.innerHTML = drilled.map(t =>
+        `<span class="summary-tech-tag summary-tech-tag--drilled">${t.name}</span>`
+      ).join('');
       if (drilledSection) drilledSection.style.display = '';
     } else {
       if (drilledSection) drilledSection.style.display = 'none';
     }
 
-    // ── Applied techniques ──
+    // ── Applied ──
     const appliedSection = document.getElementById('sum-applied-section');
     const appliedTags    = document.getElementById('sum-applied-tags');
     if (applied.length > 0) {
-      if (appliedTags) {
-        appliedTags.innerHTML = applied.map(t =>
-          `<span class="summary-tech-tag summary-tech-tag--applied">${t.name}</span>`
-        ).join('');
-      }
+      if (appliedTags) appliedTags.innerHTML = applied.map(t =>
+        `<span class="summary-tech-tag summary-tech-tag--applied">${t.name}</span>`
+      ).join('');
       if (appliedSection) appliedSection.style.display = '';
     } else {
       if (appliedSection) appliedSection.style.display = 'none';
@@ -175,12 +142,7 @@ const LogSummary = (() => {
   }
 
   function init() {
-    const doneBtn = document.getElementById('summary-done-btn');
-    if (doneBtn) {
-      doneBtn.addEventListener('click', () => {
-        LogSheet.close();
-      });
-    }
+    // Summary page is read-only — user closes via swipe or X button
   }
 
   return { init, render };

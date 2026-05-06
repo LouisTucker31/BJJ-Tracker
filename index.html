@@ -258,11 +258,11 @@
             <div class="inline-form-title">New Academy</div>
             <div class="form-field">
               <label class="form-label">Name</label>
-              <input class="form-input" id="academy-name-input" type="text" placeholder="e.g. Gracie Barra Bristol" maxlength="50" autocapitalize="words" autocorrect="off" />
+              <input class="form-input" id="academy-name-input" type="text" placeholder="e.g. Gracie Barra Bristol" maxlength="50" autocapitalize="words" autocorrect="on" spellcheck="true" />
             </div>
             <div class="form-field">
               <label class="form-label">Location <span class="form-label-optional">(optional)</span></label>
-              <input class="form-input" id="academy-location-input" type="text" placeholder="e.g. Bristol, UK" maxlength="60" autocapitalize="words" autocorrect="off" />
+              <input class="form-input" id="academy-location-input" type="text" placeholder="e.g. Bristol, UK" maxlength="60" autocapitalize="words" autocorrect="on" spellcheck="true" />
             </div>
             <div class="form-field">
               <label class="form-label">Icon</label>
@@ -297,7 +297,7 @@
             <div class="inline-form-title">New Coach</div>
             <div class="form-field">
               <label class="form-label">Name</label>
-              <input class="form-input" id="coach-name-input" type="text" placeholder="e.g. Professor Silva" maxlength="50" autocapitalize="words" autocorrect="off" />
+              <input class="form-input" id="coach-name-input" type="text" placeholder="e.g. Professor Silva" maxlength="50" autocapitalize="words" autocorrect="on" spellcheck="true" />
             </div>
             <div class="form-field">
               <label class="form-label">Icon</label>
@@ -362,7 +362,8 @@
           <div class="details-section">
             <div class="details-row">
               <span class="details-label">Date</span>
-              <input type="date" id="session-date" class="details-date-input" />
+              <button id="session-date-display" class="details-value-btn">06 May 2026</button>
+              <input type="date" id="session-date" class="details-date-hidden" />
             </div>
 
             <div class="details-row details-row--border">
@@ -415,7 +416,7 @@
 
           <!-- Notes -->
           <div class="details-section">
-            <textarea id="session-notes" class="notes-input" placeholder="Any notes about the session..." rows="4" autocapitalize="sentences"></textarea>
+            <textarea id="session-notes" class="notes-input" placeholder="Any notes about the session..." rows="4" autocapitalize="sentences" autocorrect="on" spellcheck="true"></textarea>
           </div>
 
           <!-- Save button -->
@@ -433,40 +434,35 @@
             <div class="summary-pills" id="summary-hero-pills"></div>
           </div>
 
-          <!-- 2x2 stat tiles -->
-          <div class="summary-stat-grid">
-            <div class="summary-stat-tile">
-              <div class="summary-stat-label">Training Type</div>
-              <div class="summary-stat-value" id="sum-type"></div>
+          <!-- Full width stacked stat tiles -->
+          <div class="summary-stack">
+            <div class="summary-stack-tile">
+              <span class="summary-stack-emoji">🥋</span>
+              <div class="summary-stack-text">
+                <div class="summary-stack-label">Training Type</div>
+                <div class="summary-stack-value" id="sum-type"></div>
+              </div>
             </div>
-            <div class="summary-stat-tile">
-              <div class="summary-stat-label">Format</div>
-              <div class="summary-stat-value" id="sum-format"></div>
+            <div class="summary-stack-tile">
+              <span class="summary-stack-emoji">👘</span>
+              <div class="summary-stack-text">
+                <div class="summary-stack-label">Format</div>
+                <div class="summary-stack-value" id="sum-format"></div>
+              </div>
             </div>
-            <div class="summary-stat-tile">
-              <div class="summary-stat-label">Intensity</div>
-              <div class="summary-stat-value" id="sum-intensity"></div>
+            <div class="summary-stack-tile" id="sum-academy-row">
+              <span class="summary-stack-emoji" id="sum-academy-icon">🏛️</span>
+              <div class="summary-stack-text">
+                <div class="summary-stack-label">Trained at</div>
+                <div class="summary-stack-value" id="sum-academy"></div>
+              </div>
             </div>
-            <div class="summary-stat-tile">
-              <div class="summary-stat-label">Energy</div>
-              <div class="summary-stat-value" id="sum-energy"></div>
-            </div>
-          </div>
-
-          <!-- Trained at / Coached by -->
-          <div class="summary-info-row" id="sum-academy-row">
-            <div class="summary-info-icon" id="sum-academy-icon"></div>
-            <div class="summary-info-text">
-              <div class="summary-info-label">Trained at</div>
-              <div class="summary-info-value" id="sum-academy"></div>
-            </div>
-          </div>
-
-          <div class="summary-info-row" id="sum-coach-row">
-            <div class="summary-info-icon" id="sum-coach-icon"></div>
-            <div class="summary-info-text">
-              <div class="summary-info-label">Coached by</div>
-              <div class="summary-info-value" id="sum-coach"></div>
+            <div class="summary-stack-tile" id="sum-coach-row">
+              <span class="summary-stack-emoji" id="sum-coach-icon">👨</span>
+              <div class="summary-stack-text">
+                <div class="summary-stack-label">Coached by</div>
+                <div class="summary-stack-value" id="sum-coach"></div>
+              </div>
             </div>
           </div>
 
@@ -487,9 +483,6 @@
             <div class="summary-section-heading">Applied in Sparring</div>
             <div class="summary-tech-tags" id="sum-applied-tags"></div>
           </div>
-
-          <!-- Done button -->
-          <button id="summary-done-btn" class="primary-btn">Done</button>
 
         </div>
 

@@ -186,11 +186,11 @@ const LogPages = (() => {
       saveBtn.addEventListener('click', () => {
         LogSummary.render();
         LogSheet.setSheetTitle('Summary');
+        LogSheet.setSaved(true);
         hideBack();
         goTo('log-page-7');
       });
     }
-
     // Page 2 → Page 3: format tiles
     ['tile-regular', 'tile-comp-class', 'tile-open-mat', 'tile-private'].forEach(id => {
       const btn = document.getElementById(id);

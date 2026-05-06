@@ -6,22 +6,53 @@
 
 const LogDetails = (() => {
 
-  // ─── Set today's date and max ─────────────────────
-  function initDate() {
-    const input = document.getElementById('session-date');
-    if (!input) return;
-    const today = new Date().toISOString().split('T')[0];
-    input.value = today;
-    input.max   = today;
-  }
-
+  // ─── Format date as "06 May 2026" ────────────────
   function formatDisplayDate(dateStr) {
     if (!dateStr) return '';
-    const d = new Date(dateStr + 'T00:00:00');
+    const d     = new Date(dateStr + 'T00:00:00');
     const day   = String(d.getDate()).padStart(2, '0');
     const month = d.toLocaleDateString('en-GB', { month: 'short' });
     const year  = d.getFullYear();
     return `${day} ${month} ${year}`;
+  }
+
+  // ─── Set today's date and max ─────────────────────
+  function initDate() {
+    const input   = document.getElementById('session-date');
+    const display = document.getElementById('session-date-display');
+    if (!input) return;
+
+    const today = new Date().toISOString().split('T')[0];
+    input.value = today;
+    input.max   = today;
+    if (display) display.textContent = formatDisplayDate(today);
+
+    // Tapping the display button opens the native date picker
+    if (display) {
+      display.addEventListener('click', () => {
+        input.style.position = 'fixed';
+        input.style.opacity  = '0';
+        input.style.top      = '0';
+        input.style.left     = '0';
+        input.style.width    = '100%';
+        input.style.height   = '100%';
+        input.style.zIndex   = '999';
+        input.style.pointerEvents = 'auto';
+        input.showPicker?.();
+        input.focus();
+        input.click();
+      });
+    }
+
+    // When date changes, update display and reset hidden input
+    input.addEventListener('change', () => {
+      if (display) display.textContent = formatDisplayDate(input.value);
+      input.style.cssText = '';
+    });
+
+    input.addEventListener('blur', () => {
+      input.style.cssText = '';
+    });
   }
 
   // ─── Segmented controls ───────────────────────────
@@ -90,7 +121,11 @@ const LogDetails = (() => {
 
   // ─── Reset ────────────────────────────────────────
   function reset() {
-    initDate();
+    const input   = document.getElementById('session-date');
+    const display = document.getElementById('session-date-display');
+    const today   = new Date().toISOString().split('T')[0];
+    if (input)   { input.value = today; input.max = today; }
+    if (display)   display.textContent = formatDisplayDate(today);
 
     // Reset segmented controls to first option
     document.querySelectorAll('.segmented-control').forEach(control => {
