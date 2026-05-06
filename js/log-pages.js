@@ -16,15 +16,28 @@ const LogPages = (() => {
     const next    = document.getElementById(pageId);
     if (!next) { console.warn('LogPages: page not found:', pageId); return; }
 
+    // Position next off-screen right instantly (no transition)
+    next.style.transition = 'none';
+    next.style.transform  = 'translateX(100%)';
+    next.style.opacity    = '1';
+    next.offsetHeight; // force reflow
+
+    // Re-enable transitions on both
+    next.style.transition    = '';
+    next.style.transform     = '';
+
     if (current) {
-      current.classList.remove('active');
-      current.classList.add('exit-left');
-      setTimeout(() => current.classList.remove('exit-left'), 380);
+      current.style.transition = '';
+      current.style.transform  = 'translateX(-100%)';
     }
 
+    // Make next interactive
     next.classList.add('active');
+    if (current) current.classList.remove('active');
+
     currentPageId = pageId;
-  }
+
+    }
 
   // ─── Navigate back ───────────────────────────────
   function goBack(pageId) {
@@ -32,18 +45,23 @@ const LogPages = (() => {
     const prev    = document.getElementById(pageId);
     if (!prev) return;
 
-    // Slide current out to the right
+    // Position prev off-screen left instantly (no transition)
+    prev.style.transition = 'none';
+    prev.style.transform  = 'translateX(-100%)';
+    prev.style.opacity    = '1';
+    prev.offsetHeight; // force reflow
+
+    // Slide prev in from left, slide current out to right simultaneously
+    prev.style.transition = '';
+    prev.style.transform  = '';
+
     if (current) {
-      current.classList.remove('active');
-      current.classList.add('exit-right');
-      setTimeout(() => current.classList.remove('exit-right'), 380);
+      current.style.transition = '';
+      current.style.transform  = 'translateX(100%)';
     }
 
-    // Bring prev in from the left
-    prev.classList.remove('exit-left', 'exit-right');
-    prev.classList.add('entering-from-left');
     prev.classList.add('active');
-    setTimeout(() => prev.classList.remove('entering-from-left'), 380);
+    if (current) current.classList.remove('active');
 
     currentPageId = pageId;
   }
