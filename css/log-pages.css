@@ -405,6 +405,7 @@
   color: var(--color-label-primary, #000);
   outline: none;
   transition: box-shadow 200ms ease;
+  text-transform: capitalize;
 }
 
 .form-input:focus {
@@ -501,226 +502,282 @@
   opacity: 0.5;
 }
 
-/* ─── Techniques page (Page 5) ───────────────────── */
-.technique-section {
-  margin-top: 20px;
+/* ─── Page subtitle (pages 2–5) ─────────────────── */
+.log-page-subtitle {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 20px;
+  margin-top: 4px;
 }
 
-.technique-section-header {
+/* ─── Page subtitle (pages 2–5) ─────────────────── */
+.log-page-subtitle {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 20px;
+  margin-top: 4px;
+}
+
+/* ─── Techniques page (Page 5) ───────────────────── */
+.tech-section {
+  margin-bottom: 28px;
+}
+
+.tech-section-heading {
+  margin-bottom: 10px;
+}
+
+.tech-section-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+  letter-spacing: -0.2px;
+}
+
+.tech-section-sub {
+  font-size: 13px;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-top: 2px;
+}
+
+/* ─── Dropdown trigger button ────────────────────── */
+.tech-dropdown-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: none;
+  padding: 13px 16px;
+  background: var(--color-bg-secondary, #f2f2f7);
   border: none;
-  padding: 0 0 10px 0;
+  border-radius: 12px;
   cursor: pointer;
   font-family: var(--font-system);
   -webkit-tap-highlight-color: transparent;
-  border-bottom: 2px solid transparent;
-  transition: border-color 200ms ease;
+  transition: background 150ms ease;
 }
 
-.technique-section-header.active {
-  border-bottom-color: #007AFF;
+.tech-dropdown-btn:active {
+  background: var(--color-bg-tertiary, #e5e5ea);
 }
 
-.technique-section-title {
-  font-size: 17px;
-  font-weight: 600;
+.tech-dropdown-btn.open {
+  background: var(--color-bg-tertiary, #e5e5ea);
+}
+
+.tech-dropdown-label {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+}
+
+.tech-dropdown-chevron svg {
+  width: 14px;
+  height: 9px;
+  stroke: var(--color-label-tertiary, rgba(60,60,67,0.3));
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tech-dropdown-btn.open .tech-dropdown-chevron svg {
+  transform: rotate(180deg);
+}
+
+/* ─── Selected technique tiles ───────────────────── */
+.tech-tiles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tech-tile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(0, 122, 255, 0.06);
+  border: 1px solid rgba(0, 122, 255, 0.15);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--color-label-primary, #000);
 }
 
-.technique-section-hint {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--color-label-tertiary, rgba(60,60,67,0.3));
-  transition: color 200ms ease;
-}
-
-.technique-section-header.active .technique-section-hint {
-  color: #007AFF;
-}
-
-.technique-divider {
-  height: 1px;
-  background: var(--color-bg-tertiary, #e5e5ea);
-  margin: 20px 0;
-}
-
-.technique-empty {
-  font-size: 14px;
-  color: var(--color-label-tertiary, rgba(60,60,67,0.3));
-  padding: 6px 0 10px 0;
-}
-
-.technique-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.technique-tag {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px 6px 12px;
-  background: rgba(0, 122, 255, 0.10);
-  border-radius: 100px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #007AFF;
-}
-
-.technique-tag-remove {
+.tech-tile-remove {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
-  background: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(60, 60, 67, 0.12);
   border: none;
   cursor: pointer;
   padding: 0;
-}
-
-.technique-tag-remove svg {
-  width: 10px;
-  height: 10px;
-  stroke: #007AFF;
-}
-
-/* ─── Category pills ──────────────────────────────── */
-.technique-picker-area {
-  margin-top: 24px;
-  border-top: 0.5px solid var(--color-bg-tertiary, #e5e5ea);
-  padding-top: 16px;
-}
-
-.technique-picker-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-label-secondary, rgba(60,60,67,0.6));
-  margin-bottom: 10px;
-}
-
-.category-pills {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.category-pills::-webkit-scrollbar {
-  display: none;
-}
-
-.category-pill {
   flex-shrink: 0;
-  padding: 7px 14px;
-  border-radius: 100px;
-  background: var(--color-bg-secondary, #f2f2f7);
-  border: none;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-label-primary, #000);
-  cursor: pointer;
-  font-family: var(--font-system);
-  transition: background 150ms ease, color 150ms ease;
   -webkit-tap-highlight-color: transparent;
-  white-space: nowrap;
 }
 
-.category-pill.active {
-  background: #007AFF;
-  color: #fff;
+.tech-tile-remove svg {
+  width: 9px;
+  height: 9px;
+  stroke: var(--color-label-secondary, rgba(60,60,67,0.6));
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
-/* ─── Technique list panel ────────────────────────── */
-.technique-list-panel {
-  margin-top: 12px;
-  background: var(--color-bg-secondary, #f2f2f7);
-  border-radius: 14px;
+/* ─── Floating dropdown overlay ──────────────────── */
+.technique-dropdown {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 80px;
+  z-index: 50;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.14));
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.technique-dropdown.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+}
+
+.technique-dropdown.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.technique-dropdown-inner {
+  background: var(--color-bg, #fff);
+  border-radius: 16px;
   overflow: hidden;
-}
-
-.technique-list-panel.hidden {
-  display: none;
-}
-
-.technique-list-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-label-secondary, rgba(60,60,67,0.6));
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  padding: 12px 16px 8px 16px;
-}
-
-.technique-list-items {
+  max-height: 55vh;
   display: flex;
   flex-direction: column;
 }
 
-.technique-list-item {
+.technique-dropdown-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: none;
+  justify-content: space-between;
+  padding: 14px 16px 12px 16px;
+  border-bottom: 0.5px solid var(--color-bg-tertiary, #e5e5ea);
+  flex-shrink: 0;
+}
+
+.technique-dropdown-header span {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+}
+
+#technique-dropdown-close {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(120, 120, 128, 0.16);
   border: none;
-  border-top: 0.5px solid var(--color-bg-tertiary, #e5e5ea);
   cursor: pointer;
-  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#technique-dropdown-close svg {
+  width: 10px;
+  height: 10px;
+  stroke: rgba(60,60,67,0.6);
+  stroke-width: 2;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.technique-dropdown-list {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
+/* ─── Category group heading ─────────────────────── */
+.technique-group-heading {
+  padding: 10px 16px 4px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  position: sticky;
+  top: 0;
+}
+
+/* ─── Technique row ──────────────────────────────── */
+.technique-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border: none;
+  border-top: 0.5px solid var(--color-bg-secondary, #f2f2f7);
+  background: var(--color-bg, #fff);
   width: 100%;
+  text-align: left;
+  cursor: pointer;
   font-family: var(--font-system);
   -webkit-tap-highlight-color: transparent;
   transition: background 120ms ease;
 }
 
-.technique-list-item:first-child {
-  border-top: none;
+.technique-row:active {
+  background: var(--color-bg-secondary, #f2f2f7);
 }
 
-.technique-list-item:active {
-  background: var(--color-bg-tertiary, #e5e5ea);
-}
-
-.technique-list-item-text {
+.technique-row-text {
   flex: 1;
 }
 
-.technique-list-item-name {
-  font-size: 14px;
-  font-weight: 500;
+.technique-row-name {
+  font-size: 15px;
+  font-weight: 400;
   color: var(--color-label-primary, #000);
 }
 
-.technique-list-item-desc {
+.technique-row-desc {
   font-size: 12px;
   color: var(--color-label-secondary, rgba(60,60,67,0.6));
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-.technique-list-item-check svg {
-  width: 18px;
-  height: 18px;
+.technique-row-check {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.technique-row-check svg {
+  width: 20px;
+  height: 20px;
   stroke: #007AFF;
+  fill: none;
   opacity: 0;
   transition: opacity 150ms ease;
 }
 
-.technique-list-item.selected .technique-list-item-check svg {
+.technique-row.selected .technique-row-check svg {
   opacity: 1;
 }
 
-/* ─── Primary continue button ─────────────────────── */
+/* ─── Primary button ─────────────────────────────── */
 .primary-btn {
   width: 100%;
   padding: 16px;
-  margin-top: 28px;
+  margin-top: 8px;
   background: #007AFF;
   color: #fff;
   border: none;
@@ -733,22 +790,35 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.primary-btn:active {
-  opacity: 0.8;
+.primary-btn:active { opacity: 0.8; }
+
+/* ─── Skip button ─────────────────────────────────── */
+.skip-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 12px;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  cursor: pointer;
+  font-family: var(--font-system);
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 150ms ease;
 }
 
+.skip-btn:active { opacity: 0.5; }
+
+/* ─── Dark mode ──────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
-  .category-pill {
-    background: #2c2c2e;
-    color: #fff;
-  }
-  .technique-list-panel {
-    background: #2c2c2e;
-  }
-  .technique-list-item {
-    border-top-color: #3a3a3c;
-  }
-  .technique-list-item:active {
-    background: #3a3a3c;
-  }
+  .tech-dropdown-btn { background: #2c2c2e; }
+  .tech-dropdown-btn:active { background: #3a3a3c; }
+  .tech-dropdown-btn.open { background: #3a3a3c; }
+  .technique-dropdown-inner { background: #1c1c1e; }
+  .technique-group-heading { background: #2c2c2e; }
+  .technique-row { background: #1c1c1e; border-top-color: #2c2c2e; }
+  .technique-row:active { background: #2c2c2e; }
+  .technique-dropdown-header { border-bottom-color: #3a3a3c; }
 }

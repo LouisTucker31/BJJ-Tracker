@@ -1,17 +1,17 @@
 /**
  * technique-picker.js
- * Shared category pill picker for Drilled and Applied sections.
- * Tapping a section header activates it.
- * Tapping a technique adds it and closes the list.
+ * Two sections: Drills and Applied in Sparring.
+ * Each has a dropdown button that opens a floating
+ * overlay showing all techniques grouped by category.
+ * Tapping a technique adds it as a tile and closes dropdown.
  */
 
 const TechniquePicker = (() => {
 
-  let techniquesData = null;
-  let drilledList    = [];
-  let appliedList    = [];
-  let activeSection  = null;
-  let activeCategory = null;
+  let techniquesData  = null;
+  let drilledList     = [];
+  let appliedList     = [];
+  let activeSection   = null;
 
   // ─── Load data ────────────────────────────────────
   async function loadData() {
@@ -29,197 +29,164 @@ const TechniquePicker = (() => {
   // ─── Render page ─────────────────────────────────
   async function renderPage() {
     await loadData();
-    renderSection('drilled');
-    renderSection('applied');
-    renderCategoryPills();
-    // Default to drilled section active
-    setActiveSection('drilled');
+    renderTiles('drilled');
+    renderTiles('applied');
   }
 
-  // ─── Set active section ───────────────────────────
-  function setActiveSection(section) {
+  // ─── Open dropdown ───────────────────────────────
+  function openDropdown(section) {
     activeSection = section;
 
-    // Update header active states
-    document.querySelectorAll('.technique-section-header').forEach(h => {
-      h.classList.toggle('active', h.dataset.section === section);
-    });
+    const dropdown = document.getElementById('technique-dropdown');
+    const title    = document.getElementById('technique-dropdown-title');
+    const list     = document.getElementById('technique-dropdown-list');
 
-    // Update picker label
-    const label = document.getElementById('technique-picker-label');
-    if (label) {
-      label.textContent = section === 'drilled'
-        ? 'Adding to Drilled — select a category'
-        : 'Adding to Applied in Sparring — select a category';
-    }
+    if (!dropdown || !list) return;
 
-    // Re-render technique list if category already open
-    if (activeCategory) {
-      renderTechniqueList(activeCategory);
-    }
-  }
+    // Set title
+    if (title) title.textContent = section === 'drilled' ? 'Drills' : 'Applied in Sparring';
 
-  // ─── Render tags for a section ────────────────────
-  function renderSection(section) {
-    const list    = section === 'drilled' ? drilledList : appliedList;
-    const tagsEl  = document.getElementById(`${section}-tags`);
-    const emptyEl = document.getElementById(`${section}-empty`);
-    if (!tagsEl) return;
+    // Mark button as open
+    document.querySelectorAll('.tech-dropdown-btn').forEach(b => b.classList.remove('open'));
+    const btn = document.getElementById(`${section}-dropdown-btn`);
+    if (btn) btn.classList.add('open');
 
-    tagsEl.innerHTML = '';
+    // Build grouped list
+    const currentList = section === 'drilled' ? drilledList : appliedList;
+    list.innerHTML = '';
 
-    if (list.length === 0) {
-      if (emptyEl) emptyEl.style.display = '';
-    } else {
-      if (emptyEl) emptyEl.style.display = 'none';
-      list.forEach(tech => {
-        const tag = document.createElement('div');
-        tag.className = 'technique-tag';
-        tag.innerHTML = `
-          <span>${tech.name}</span>
-          <button class="technique-tag-remove" aria-label="Remove">
-            <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1l8 8M9 1L1 9" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-          </button>
-        `;
-        tag.querySelector('.technique-tag-remove').addEventListener('click', () => {
-          removeTechnique(section, tech.id);
-        });
-        tagsEl.appendChild(tag);
-      });
-    }
-  }
-
-  // ─── Render category pills ────────────────────────
-  function renderCategoryPills() {
-    const container = document.getElementById('technique-category-pills');
-    if (!container || !techniquesData) return;
-    container.innerHTML = '';
     techniquesData.categories.forEach(cat => {
-      const pill = document.createElement('button');
-      pill.className = 'category-pill';
-      pill.dataset.id = cat.id;
-      pill.textContent = `${cat.icon} ${cat.name}`;
-      pill.addEventListener('click', () => selectCategory(cat.id));
-      container.appendChild(pill);
+      // Category heading
+      const heading = document.createElement('div');
+      heading.className = 'technique-group-heading';
+      heading.textContent = `${cat.icon} ${cat.name}`;
+      list.appendChild(heading);
+
+      // Techniques
+      cat.techniques.forEach(tech => {
+        const isSelected = currentList.some(t => t.id === tech.id);
+        const row = document.createElement('button');
+        row.className = `technique-row${isSelected ? ' selected' : ''}`;
+        row.dataset.id = tech.id;
+        row.innerHTML = `
+          <div class="technique-row-text">
+            <div class="technique-row-name">${tech.name}</div>
+            <div class="technique-row-desc">${tech.description}</div>
+          </div>
+          <div class="technique-row-check">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        `;
+        row.addEventListener('click', () => addTechnique(tech, row));
+        list.appendChild(row);
+      });
     });
+
+    // Show dropdown
+    dropdown.classList.remove('hidden');
+    requestAnimationFrame(() => dropdown.classList.add('visible'));
   }
 
-  // ─── Select category ─────────────────────────────
-  function selectCategory(catId) {
-    // If same pill tapped again — close list
-    if (activeCategory === catId) {
-      activeCategory = null;
-      document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-      const panel = document.getElementById('technique-list-panel');
-      if (panel) panel.classList.add('hidden');
-      return;
-    }
+  // ─── Close dropdown ──────────────────────────────
+  function closeDropdown() {
+    const dropdown = document.getElementById('technique-dropdown');
+    if (!dropdown) return;
 
-    activeCategory = catId;
-    document.querySelectorAll('.category-pill').forEach(p => {
-      p.classList.toggle('active', p.dataset.id === catId);
-    });
+    dropdown.classList.remove('visible');
+    setTimeout(() => {
+      dropdown.classList.add('hidden');
+    }, 220);
 
-    renderTechniqueList(catId);
-    const panel = document.getElementById('technique-list-panel');
-    if (panel) panel.classList.remove('hidden');
+    document.querySelectorAll('.tech-dropdown-btn').forEach(b => b.classList.remove('open'));
+    activeSection = null;
   }
 
-  // ─── Render technique list ────────────────────────
-  function renderTechniqueList(catId) {
-    const cat    = techniquesData.categories.find(c => c.id === catId);
-    const listEl = document.getElementById('technique-list-items');
-    const titleEl = document.getElementById('technique-list-title');
-    if (!cat || !listEl) return;
-
-    if (titleEl) titleEl.textContent = cat.name;
-    listEl.innerHTML = '';
-
-    const currentList = activeSection === 'drilled' ? drilledList : appliedList;
-
-    cat.techniques.forEach(tech => {
-      const isSelected = currentList.some(t => t.id === tech.id);
-      const item = document.createElement('button');
-      item.className = `technique-list-item${isSelected ? ' selected' : ''}`;
-      item.dataset.id = tech.id;
-      item.innerHTML = `
-        <div class="technique-list-item-text">
-          <div class="technique-list-item-name">${tech.name}</div>
-          <div class="technique-list-item-desc">${tech.description}</div>
-        </div>
-        <div class="technique-list-item-check">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      `;
-      item.addEventListener('click', () => addTechnique(tech, item));
-      listEl.appendChild(item);
-    });
-  }
-
-  // ─── Add technique and close list ────────────────
-  function addTechnique(tech, itemEl) {
+  // ─── Add technique ───────────────────────────────
+  function addTechnique(tech, rowEl) {
     const list = activeSection === 'drilled' ? drilledList : appliedList;
     const idx  = list.findIndex(t => t.id === tech.id);
 
     if (idx > -1) {
-      // Already in list — remove it
       list.splice(idx, 1);
-      if (itemEl) itemEl.classList.remove('selected');
+      if (rowEl) rowEl.classList.remove('selected');
     } else {
-      // Add it
       list.push(tech);
-      if (itemEl) itemEl.classList.add('selected');
+      if (rowEl) rowEl.classList.add('selected');
     }
 
-    renderSection(activeSection);
+    renderTiles(activeSection);
     LogPages.setDirty(true);
 
-    // Close list after adding (not removing)
+    // Close after adding (not removing)
     if (idx === -1) {
-      setTimeout(() => {
-        activeCategory = null;
-        document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-        const panel = document.getElementById('technique-list-panel');
-        if (panel) panel.classList.add('hidden');
-      }, 300);
+      setTimeout(() => closeDropdown(), 200);
     }
   }
 
-  // ─── Remove technique tag ─────────────────────────
+  // ─── Render tiles ────────────────────────────────
+  function renderTiles(section) {
+    const list   = section === 'drilled' ? drilledList : appliedList;
+    const tilesEl = document.getElementById(`${section}-tiles`);
+    if (!tilesEl) return;
+
+    tilesEl.innerHTML = '';
+    list.forEach(tech => {
+      const tile = document.createElement('div');
+      tile.className = 'tech-tile';
+      tile.innerHTML = `
+        <span>${tech.name}</span>
+        <button class="tech-tile-remove" aria-label="Remove ${tech.name}">
+          <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1l8 8M9 1L1 9" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      `;
+      tile.querySelector('.tech-tile-remove').addEventListener('click', () => {
+        removeTechnique(section, tech.id);
+      });
+      tilesEl.appendChild(tile);
+    });
+  }
+
+  // ─── Remove technique ────────────────────────────
   function removeTechnique(section, techId) {
     if (section === 'drilled') {
       drilledList = drilledList.filter(t => t.id !== techId);
     } else {
       appliedList = appliedList.filter(t => t.id !== techId);
     }
-    renderSection(section);
+    renderTiles(section);
   }
 
   // ─── Init ────────────────────────────────────────
   function init() {
-    // Section headers activate picker for that section
-    document.querySelectorAll('.technique-section-header').forEach(header => {
-      header.addEventListener('click', () => {
-        setActiveSection(header.dataset.section);
+    // Dropdown buttons
+    document.querySelectorAll('.tech-dropdown-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.dataset.section;
+        if (activeSection === section) {
+          closeDropdown();
+        } else {
+          openDropdown(section);
+        }
       });
     });
+
+    // Close button
+    const closeBtn = document.getElementById('technique-dropdown-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeDropdown);
   }
 
   // ─── Reset ───────────────────────────────────────
   function reset() {
-    drilledList   = [];
-    appliedList   = [];
+    drilledList  = [];
+    appliedList  = [];
     activeSection = null;
-    activeCategory = null;
-
-    const panel = document.getElementById('technique-list-panel');
-    if (panel) panel.classList.add('hidden');
-    document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.technique-section-header').forEach(h => h.classList.remove('active'));
+    closeDropdown();
+    renderTiles('drilled');
+    renderTiles('applied');
   }
 
   function getDrilled() { return [...drilledList]; }

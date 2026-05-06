@@ -21,7 +21,6 @@
 
   <div id="app">
 
-    <!-- Pages -->
     <main id="page-container">
       <div id="page-home"     class="page active" data-page="home"></div>
       <div id="page-sessions" class="page"        data-page="sessions"></div>
@@ -29,7 +28,6 @@
       <div id="page-profile"  class="page"        data-page="profile"></div>
     </main>
 
-    <!-- Bottom Navigation -->
     <nav id="bottom-nav" aria-label="Main navigation">
       <div id="nav-track">
         <div id="nav-pill"></div>
@@ -88,7 +86,6 @@
       </div>
     </nav>
 
-    <!-- Log slide-up sheet (fixed, sits above everything) -->
     <div id="log-backdrop"></div>
     <div id="log-sheet" role="dialog" aria-modal="true" aria-label="Log session">
       <div id="log-sheet-handle-area">
@@ -109,7 +106,7 @@
       </div>
       <div id="log-sheet-body">
 
-        <!-- Page 1: Session Type -->
+        <!-- Page 1: Session Type — keeps large title, sheet header is empty -->
         <div class="log-page" id="log-page-1">
           <div class="log-page-heading">
             <div class="log-page-title">Log a Session</div>
@@ -165,10 +162,7 @@
 
         <!-- Page 2: Session Format -->
         <div class="log-page" id="log-page-2">
-          <div class="log-page-heading">
-            <div class="log-page-title">Session Type</div>
-            <div class="log-page-date">What kind of session was it?</div>
-          </div>
+          <div class="log-page-subtitle">What kind of session was it?</div>
           <div class="format-list">
 
             <button class="format-tile" id="tile-regular">
@@ -250,15 +244,8 @@
 
         <!-- Page 3: Academy -->
         <div class="log-page" id="log-page-3">
-          <div class="log-page-heading">
-            <div class="log-page-title">Where did you train?</div>
-            <div class="log-page-date">Select or add an academy</div>
-          </div>
-
-          <!-- Saved academies list -->
+          <div class="log-page-subtitle">Select or add an academy</div>
           <div id="academy-list" class="academy-list"></div>
-
-          <!-- Add academy button -->
           <button id="add-academy-btn" class="add-item-btn">
             <div class="add-item-btn-icon">
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -267,21 +254,16 @@
             </div>
             <span>Add Academy</span>
           </button>
-
-          <!-- Inline add academy form (hidden by default) -->
           <div id="add-academy-form" class="inline-form hidden">
             <div class="inline-form-title">New Academy</div>
-
             <div class="form-field">
               <label class="form-label">Name</label>
-              <input class="form-input" id="academy-name-input" type="text" placeholder="e.g. Gracie Barra Bristol" maxlength="50" />
+              <input class="form-input" id="academy-name-input" type="text" placeholder="e.g. Gracie Barra Bristol" maxlength="50" autocapitalize="words" autocorrect="off" />
             </div>
-
             <div class="form-field">
               <label class="form-label">Location <span class="form-label-optional">(optional)</span></label>
-              <input class="form-input" id="academy-location-input" type="text" placeholder="e.g. Bristol, UK" maxlength="60" />
+              <input class="form-input" id="academy-location-input" type="text" placeholder="e.g. Bristol, UK" maxlength="60" autocapitalize="words" autocorrect="off" />
             </div>
-
             <div class="form-field">
               <label class="form-label">Icon</label>
               <div class="icon-picker" id="academy-icon-picker">
@@ -292,7 +274,6 @@
                 <button class="icon-option" data-icon="shield">🛡️</button>
               </div>
             </div>
-
             <div class="inline-form-actions">
               <button id="academy-cancel-btn" class="form-btn form-btn--secondary">Cancel</button>
               <button id="academy-save-btn" class="form-btn form-btn--primary">Save</button>
@@ -302,15 +283,8 @@
 
         <!-- Page 4: Coach -->
         <div class="log-page" id="log-page-4">
-          <div class="log-page-heading">
-            <div class="log-page-title">Who was your coach?</div>
-            <div class="log-page-date">Select, add, or skip</div>
-          </div>
-
-          <!-- Saved coaches list -->
+          <div class="log-page-subtitle">Select, add, or skip</div>
           <div id="coach-list" class="academy-list"></div>
-
-          <!-- Add coach button -->
           <button id="add-coach-btn" class="add-item-btn">
             <div class="add-item-btn-icon">
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -319,16 +293,12 @@
             </div>
             <span>Add Coach</span>
           </button>
-
-          <!-- Inline add coach form -->
           <div id="add-coach-form" class="inline-form hidden">
             <div class="inline-form-title">New Coach</div>
-
             <div class="form-field">
               <label class="form-label">Name</label>
-              <input class="form-input" id="coach-name-input" type="text" placeholder="e.g. Professor Silva" maxlength="50" />
+              <input class="form-input" id="coach-name-input" type="text" placeholder="e.g. Professor Silva" maxlength="50" autocapitalize="words" autocorrect="off" />
             </div>
-
             <div class="form-field">
               <label class="form-label">Icon</label>
               <div class="icon-picker" id="coach-icon-picker">
@@ -338,60 +308,69 @@
                 <button class="icon-option" data-icon="star">⭐</button>
               </div>
             </div>
-
             <div class="inline-form-actions">
               <button id="coach-cancel-btn" class="form-btn form-btn--secondary">Cancel</button>
               <button id="coach-save-btn" class="form-btn form-btn--primary">Save</button>
             </div>
           </div>
-
-          <!-- Skip button -->
           <button id="skip-coach-btn" class="skip-btn">No coach this session</button>
         </div>
 
         <!-- Page 5: Techniques -->
         <div class="log-page" id="log-page-5">
-          <div class="log-page-heading">
-            <div class="log-page-title">Techniques</div>
-            <div class="log-page-date">What did you work on?</div>
-          </div>
+          <div class="log-page-subtitle">What did you work on?</div>
 
           <!-- Drilled section -->
-          <div class="technique-section" id="section-drilled">
-            <button class="technique-section-header" data-section="drilled">
-              <div class="technique-section-title">Drilled</div>
-              <div class="technique-section-hint">Tap to add</div>
-            </button>
-            <div id="drilled-empty" class="technique-empty">Nothing added yet</div>
-            <div id="drilled-tags" class="technique-tags"></div>
-          </div>
-
-          <div class="technique-divider"></div>
-
-          <!-- Applied in Sparring section -->
-          <div class="technique-section" id="section-applied">
-            <button class="technique-section-header" data-section="applied">
-              <div class="technique-section-title">Applied in Sparring</div>
-              <div class="technique-section-hint">Tap to add</div>
-            </button>
-            <div id="applied-empty" class="technique-empty">Nothing added yet</div>
-            <div id="applied-tags" class="technique-tags"></div>
-          </div>
-
-          <!-- Category pills + technique list -->
-          <div class="technique-picker-area">
-            <div class="technique-picker-label" id="technique-picker-label">
-              Select a category
+          <div class="tech-section">
+            <div class="tech-section-heading">
+              <div class="tech-section-title">Drills</div>
+              <div class="tech-section-sub">Browse and select techniques</div>
             </div>
-            <div id="technique-category-pills" class="category-pills"></div>
-            <div id="technique-list-panel" class="technique-list-panel hidden">
-              <div id="technique-list-title" class="technique-list-title"></div>
-              <div id="technique-list-items" class="technique-list-items"></div>
-            </div>
+            <button class="tech-dropdown-btn" id="drilled-dropdown-btn" data-section="drilled">
+              <span class="tech-dropdown-label">Browse techniques</span>
+              <span class="tech-dropdown-chevron">
+                <svg viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 2l8 8 8-8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div id="drilled-tiles" class="tech-tiles"></div>
           </div>
 
-          <!-- Continue button -->
+          <!-- Applied section -->
+          <div class="tech-section">
+            <div class="tech-section-heading">
+              <div class="tech-section-title">Applied in Sparring</div>
+              <div class="tech-section-sub">Browse and select techniques</div>
+            </div>
+            <button class="tech-dropdown-btn" id="applied-dropdown-btn" data-section="applied">
+              <span class="tech-dropdown-label">Browse techniques</span>
+              <span class="tech-dropdown-chevron">
+                <svg viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 2l8 8 8-8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div id="applied-tiles" class="tech-tiles"></div>
+          </div>
+
           <button id="techniques-continue-btn" class="primary-btn">Continue</button>
+
+          <!-- Floating dropdown overlay -->
+          <div id="technique-dropdown" class="technique-dropdown hidden">
+            <div class="technique-dropdown-inner">
+              <div class="technique-dropdown-header">
+                <span id="technique-dropdown-title"></span>
+                <button id="technique-dropdown-close">
+                  <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1l10 10M11 1L1 11" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div id="technique-dropdown-list" class="technique-dropdown-list"></div>
+            </div>
+          </div>
+
         </div>
 
         <!-- Page 6 onwards -->
