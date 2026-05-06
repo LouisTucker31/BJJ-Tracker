@@ -98,7 +98,7 @@ const LogAcademy = (() => {
   // ─── Icon picker ──────────────────────────────────
   function resetIconPicker() {
     selectedIcon = 'dojo';
-    document.querySelectorAll('.icon-option').forEach(btn => {
+    document.querySelectorAll('#academy-icon-picker .icon-option').forEach(btn => {
       btn.classList.toggle('selected', btn.dataset.icon === 'dojo');
     });
   }
@@ -130,11 +130,11 @@ const LogAcademy = (() => {
     const saveBtn = document.getElementById('academy-save-btn');
     if (saveBtn) saveBtn.addEventListener('click', saveAcademy);
 
-    // Icon picker
-    document.querySelectorAll('.icon-option').forEach(btn => {
+    // Icon picker — scoped to academy picker only
+    document.querySelectorAll('#academy-icon-picker .icon-option').forEach(btn => {
       btn.addEventListener('click', () => {
         selectedIcon = btn.dataset.icon;
-        document.querySelectorAll('.icon-option').forEach(b => b.classList.remove('selected'));
+        document.querySelectorAll('#academy-icon-picker .icon-option').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
       });
     });

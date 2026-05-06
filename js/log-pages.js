@@ -184,6 +184,18 @@ const LogPages = (() => {
     const saveBtn = document.getElementById('save-session-btn');
     if (saveBtn) {
       saveBtn.addEventListener('click', () => {
+        // Build and save session object
+        const details = LogDetails.getValues();
+        const session = {
+          ...details,
+          sessionType: window._logSessionType || 'Rolling',
+          formatType:  window._logFormatType  || '',
+          academy:     LogAcademy.getSelected(),
+          coach:       LogCoach.getSelected(),
+        };
+        SessionStore.save(session);
+        SessionsPage.refresh();
+
         LogSummary.render();
         LogSheet.setSheetTitle('Summary');
         LogSheet.setSaved(true);

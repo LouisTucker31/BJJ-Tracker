@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/transitions.css" />
   <link rel="stylesheet" href="css/log-sheet.css" />
   <link rel="stylesheet" href="css/log-pages.css" />
+  <link rel="stylesheet" href="css/sessions-page.css" />
 </head>
 <body>
 
@@ -23,7 +24,41 @@
 
     <main id="page-container">
       <div id="page-home"     class="page active" data-page="home"></div>
-      <div id="page-sessions" class="page"        data-page="sessions"></div>
+      <div id="page-sessions" class="page" data-page="sessions">
+
+        <!-- Header + segmented control -->
+        <div class="sessions-header">
+          <div class="sessions-header-title">Sessions</div>
+          <div class="sessions-seg" id="sessions-seg">
+            <button class="sessions-seg-btn active" data-view="sessions">Sessions</button>
+            <button class="sessions-seg-btn" data-view="techniques">Techniques</button>
+          </div>
+        </div>
+
+        <!-- Sessions list view -->
+        <div class="sessions-view active" id="sessions-list-view"></div>
+
+        <!-- Techniques view -->
+        <div class="sessions-view" id="sessions-techniques-view"></div>
+
+        <!-- Session view sheet -->
+        <div class="session-view-backdrop" id="session-view-backdrop"></div>
+        <div class="session-view-sheet" id="session-view-sheet">
+          <div class="session-view-handle-area">
+            <div class="session-view-handle"></div>
+          </div>
+          <div class="session-view-header">
+            <span class="session-view-title">Session</span>
+            <button class="session-view-close" id="session-view-close">
+              <svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1l10 10M11 1L1 11" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="session-view-body" id="session-view-body"></div>
+        </div>
+
+      </div>
       <div id="page-insights" class="page"        data-page="insights"></div>
       <div id="page-profile"  class="page"        data-page="profile"></div>
     </main>
@@ -229,10 +264,6 @@
                 <button class="icon-option selected" data-icon="dojo">🥋</button>
                 <button class="icon-option" data-icon="pin">📍</button>
                 <button class="icon-option" data-icon="home">🏠</button>
-                <button class="icon-option" data-icon="building">🏛️</button>
-                <button class="icon-option" data-icon="shield">🛡️</button><button class="icon-option selected" data-icon="dojo">🥋</button>
-                <button class="icon-option" data-icon="pin">📍</button>
-                <button class="icon-option" data-icon="star">⭐</button>
                 <button class="icon-option" data-icon="building">🏛️</button>
                 <button class="icon-option" data-icon="shield">🛡️</button>
               </div>
@@ -448,12 +479,14 @@
 
   </div>
 
+  <script src="js/session-store.js"></script>
   <script src="js/academy-store.js"></script>
   <script src="js/log-academy.js"></script>
   <script src="js/coach-store.js"></script>
   <script src="js/technique-picker.js"></script>
   <script src="js/log-details.js"></script>
   <script src="js/log-summary.js"></script>
+  <script src="js/sessions-page.js"></script>
   <script src="js/log-coach.js"></script>
   <script src="js/router.js"></script>
   <script src="js/navbar.js"></script>

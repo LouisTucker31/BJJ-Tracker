@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   LogCoach.init();
   TechniquePicker.init();
   LogDetails.init();
+  SessionsPage.init();
   LogSummary.init();
 
   if ('serviceWorker' in navigator) {

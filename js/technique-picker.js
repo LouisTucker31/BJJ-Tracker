@@ -323,6 +323,6 @@ const TechniquePicker = (() => {
   function getDrilled() { return [...drilledList]; }
   function getApplied() { return [...appliedList]; }
 
-  return { init, renderPage, reset, getDrilled, getApplied };
+  return { init, renderPage, reset, getDrilled, getApplied, TECHNIQUES_DATA };
 
 })();
