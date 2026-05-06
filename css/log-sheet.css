@@ -1,0 +1,135 @@
+/* ============================================================
+   Log Sheet — iOS-style slide-up modal sheet
+   ============================================================ */
+
+#log-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.40);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 380ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+#log-backdrop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#log-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 201;
+  height: 92dvh;
+  background: var(--color-bg, #ffffff);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.12), 0 -1px 0 rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(100%);
+  transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+#log-sheet.open {
+  transform: translateY(0);
+}
+
+#log-sheet.dragging {
+  transition: none;
+}
+
+#log-sheet-handle-area {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 12px;
+  padding-bottom: 4px;
+  min-height: 32px;
+  cursor: grab;
+}
+
+#log-sheet-handle-area:active {
+  cursor: grabbing;
+}
+
+#log-sheet-handle {
+  width: 36px;
+  height: 5px;
+  border-radius: 100px;
+  background: rgba(60, 60, 67, 0.18);
+}
+
+#log-sheet-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 20px 16px 20px;
+}
+
+#log-sheet-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: var(--color-label-primary, #000);
+}
+
+#log-sheet-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(120, 120, 128, 0.16);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 150ms ease, transform 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#log-sheet-close:active {
+  background: rgba(120, 120, 128, 0.28);
+  transform: scale(0.92);
+}
+
+#log-sheet-close svg {
+  width: 12px;
+  height: 12px;
+  stroke: rgba(60, 60, 67, 0.70);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+#log-sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+@media (prefers-color-scheme: dark) {
+  #log-sheet {
+    background: #1c1c1e;
+    box-shadow: 0 -4px 32px rgba(0,0,0,0.40), 0 -1px 0 rgba(255,255,255,0.06);
+  }
+  #log-sheet-handle {
+    background: rgba(235, 235, 245, 0.20);
+  }
+  #log-sheet-close {
+    background: rgba(120, 120, 128, 0.24);
+  }
+  #log-sheet-close svg {
+    stroke: rgba(235, 235, 245, 0.60);
+  }
+}
