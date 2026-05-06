@@ -100,6 +100,12 @@ const LogPages = (() => {
     } else if (pageId === 'log-page-5') {
       showBack();
       LogSheet.setSheetTitle('Techniques');
+    } else if (pageId === 'log-page-6') {
+      showBack();
+      LogSheet.setSheetTitle('Session Details');
+    } else if (pageId === 'log-page-7') {
+      hideBack();
+      LogSheet.setSheetTitle('Summary');
     }
   }
   // ─── Reset ───────────────────────────────────────
@@ -107,6 +113,8 @@ const LogPages = (() => {
     isDirty      = false;
     _history     = [];
     currentPageId = 'log-page-1';
+    window._logSessionType = '';
+    window._logFormatType  = '';
 
     document.querySelectorAll('.log-page').forEach(p => {
       p.classList.remove('active', 'exit-left', 'exit-right', 'entering-from-left');
@@ -151,9 +159,10 @@ const LogPages = (() => {
     const rollingBtn = document.getElementById('tile-rolling');
     if (rollingBtn) {
       rollingBtn.addEventListener('click', () => {
+        window._logSessionType = 'Rolling';
         pushHistory('log-page-1');
         LogSheet.setSheetTitle('Rolling');
-        showBack('Back');
+        showBack();
         goTo('log-page-2');
       });
     }
@@ -165,7 +174,19 @@ const LogPages = (() => {
         pushHistory('log-page-5');
         LogSheet.setSheetTitle('Session Details');
         showBack();
+        LogDetails.renderSummary();
         goTo('log-page-6');
+      });
+    }
+
+    // Page 6 → Page 7: save
+    const saveBtn = document.getElementById('save-session-btn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        LogSummary.render();
+        LogSheet.setSheetTitle('Summary');
+        hideBack();
+        goTo('log-page-7');
       });
     }
 
@@ -175,10 +196,11 @@ const LogPages = (() => {
       if (btn) {
         btn.addEventListener('click', () => {
           setDirty(true);
+          window._logFormatType = btn.querySelector('.format-tile-title').textContent;
           pushHistory('log-page-2');
           const label = btn.querySelector('.format-tile-title').textContent;
           LogSheet.setSheetTitle(label);
-          showBack('Session Type');
+          showBack();
           LogAcademy.renderList();
           goTo('log-page-3');
         });

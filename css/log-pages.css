@@ -659,3 +659,399 @@
 .primary-btn:active {
   opacity: 0.8;
 }
+
+/* ─── Session Details (Page 6) ───────────────────── */
+.details-section {
+  background: var(--color-bg, #fff);
+  border-radius: 14px;
+  border: 1px solid var(--color-bg-tertiary, #e5e5ea);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.details-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  gap: 12px;
+}
+
+.details-row--border {
+  border-top: 0.5px solid var(--color-bg-tertiary, #e5e5ea);
+}
+
+.details-label {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-label-primary, #000);
+  flex-shrink: 0;
+}
+
+/* ─── Date input ─────────────────────────────────── */
+.details-date-input {
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-family: var(--font-system);
+  color: #007AFF;
+  text-align: right;
+  outline: none;
+  cursor: pointer;
+  flex: 1;
+  max-width: 160px;
+}
+
+/* ─── Segmented control ──────────────────────────── */
+.segmented-control {
+  display: flex;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.seg-btn {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-system);
+  transition: background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.seg-btn.active {
+  background: var(--color-bg, #fff);
+  color: var(--color-label-primary, #000);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+  font-weight: 600;
+}
+
+/* ─── Energy slider ──────────────────────────────── */
+.energy-row {
+  padding: 14px 16px;
+}
+
+.energy-emojis {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+
+.energy-emojis span {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.energy-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 100px;
+  background: var(--color-bg-tertiary, #e5e5ea);
+  outline: none;
+  cursor: pointer;
+}
+
+.energy-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 150ms ease;
+}
+
+.energy-slider::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+
+/* ─── Notes ──────────────────────────────────────── */
+.notes-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-family: var(--font-system);
+  color: var(--color-label-primary, #000);
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+  min-height: 100px;
+}
+
+.notes-input::placeholder {
+  color: var(--color-label-tertiary, rgba(60,60,67,0.3));
+}
+
+/* ─── Technique summary ──────────────────────────── */
+.summary-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 12px 16px 6px 16px;
+}
+
+.summary-group {
+  padding: 0 16px 12px 16px;
+}
+
+.summary-group-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 6px;
+  margin-top: 8px;
+}
+
+.summary-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.summary-tag {
+  padding: 4px 10px;
+  background: rgba(0,122,255,0.08);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #007AFF;
+}
+
+.summary-tag--applied {
+  background: rgba(52,199,89,0.10);
+  color: #34C759;
+}
+
+/* ─── Save button ────────────────────────────────── */
+.primary-btn--save {
+  margin-top: 4px;
+  margin-bottom: 20px;
+  background: #34C759;
+}
+
+/* ─── Dark mode ──────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .details-section {
+    background: #1c1c1e;
+    border-color: #3a3a3c;
+  }
+  .details-row--border {
+    border-top-color: #3a3a3c;
+  }
+  .segmented-control {
+    background: #2c2c2e;
+  }
+  .seg-btn.active {
+    background: #3a3a3c;
+  }
+  .energy-slider {
+    background: #3a3a3c;
+  }
+  .energy-slider::-webkit-slider-thumb {
+    background: #636366;
+  }
+}
+
+/* ─── Duration select ────────────────────────────── */
+.details-select {
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-family: var(--font-system);
+  color: #007AFF;
+  text-align: right;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ─── Summary page (Page 7) ──────────────────────── */
+.summary-page-hero {
+  margin-bottom: 20px;
+}
+
+.summary-page-date {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-page-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--color-label-primary, #000);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.summary-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.summary-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-label-primary, #000);
+}
+
+.summary-pill-icon {
+  font-size: 12px;
+}
+
+/* ─── 2x2 stat grid ──────────────────────────────── */
+.summary-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.summary-stat-tile {
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.summary-stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.summary-stat-value {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+}
+
+/* ─── Info rows (academy, coach) ─────────────────── */
+.summary-info-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+
+.summary-info-icon {
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg, #fff);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.summary-info-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.summary-info-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+}
+
+/* ─── Notes ──────────────────────────────────────── */
+.summary-notes {
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.summary-section-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 8px;
+}
+
+.summary-notes-text {
+  font-size: 15px;
+  color: var(--color-label-primary, #000);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* ─── Technique tags ─────────────────────────────── */
+.summary-techniques {
+  margin-bottom: 10px;
+}
+
+.summary-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.summary-tech-tag {
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.summary-tech-tag--drilled {
+  background: rgba(0, 122, 255, 0.10);
+  color: #007AFF;
+}
+
+.summary-tech-tag--applied {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34C759;
+}
+
+/* ─── Dark mode ──────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .summary-stat-tile { background: #2c2c2e; }
+  .summary-info-row  { background: #2c2c2e; }
+  .summary-info-icon { background: #1c1c1e; }
+  .summary-notes     { background: #2c2c2e; }
+  .summary-pill      { background: #2c2c2e; }
+}

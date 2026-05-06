@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   LogAcademy.init();
   LogCoach.init();
   TechniquePicker.init();
+  LogDetails.init();
+  LogSummary.init();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});

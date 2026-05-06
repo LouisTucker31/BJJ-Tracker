@@ -354,8 +354,151 @@
 
         </div>
 
-        <!-- Page 6 onwards -->
-        <div class="log-page" id="log-page-6"></div>
+        <!-- Page 6: Session Details -->
+        <div class="log-page" id="log-page-6">
+          <div class="log-page-subtitle">How did it go?</div>
+
+          <!-- Date, Duration, Gi, Intensity -->
+          <div class="details-section">
+            <div class="details-row">
+              <span class="details-label">Date</span>
+              <input type="date" id="session-date" class="details-date-input" />
+            </div>
+
+            <div class="details-row details-row--border">
+              <span class="details-label">Duration</span>
+              <select id="session-duration" class="details-select">
+                <option value="30">30 min</option>
+                <option value="45">45 min</option>
+                <option value="60" selected>1 hour</option>
+                <option value="75">1h 15min</option>
+                <option value="90">1h 30min</option>
+                <option value="105">1h 45min</option>
+                <option value="120">2 hours</option>
+                <option value="150">2h 30min</option>
+                <option value="180">3 hours</option>
+                <option value="180+">3+ hours</option>
+              </select>
+            </div>
+
+            <div class="details-row details-row--border">
+              <span class="details-label">Format</span>
+              <div class="segmented-control" id="gi-control">
+                <button class="seg-btn active" data-value="gi">Gi</button>
+                <button class="seg-btn" data-value="nogi">No-Gi</button>
+              </div>
+            </div>
+
+            <div class="details-row details-row--border">
+              <span class="details-label">Intensity</span>
+              <div class="segmented-control" id="intensity-control">
+                <button class="seg-btn active" data-value="light">Light</button>
+                <button class="seg-btn" data-value="moderate">Moderate</button>
+                <button class="seg-btn" data-value="hard">Hard</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Energy slider -->
+          <div class="details-section">
+            <div class="energy-row">
+              <div class="energy-emojis">
+                <span>😴</span>
+                <span>😕</span>
+                <span>😐</span>
+                <span>😊</span>
+                <span>🔥</span>
+              </div>
+              <input type="range" id="energy-slider" class="energy-slider" min="1" max="5" value="3" step="1" />
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="details-section">
+            <textarea id="session-notes" class="notes-input" placeholder="Any notes about the session..." rows="4" autocapitalize="sentences"></textarea>
+          </div>
+
+          <!-- Technique summary -->
+          <div class="details-section" id="technique-summary-section">
+            <div class="summary-heading">Session Summary</div>
+            <div id="summary-drilled" class="summary-group"></div>
+            <div id="summary-applied" class="summary-group"></div>
+          </div>
+
+          <!-- Save button -->
+          <button id="save-session-btn" class="primary-btn primary-btn--save">Save Session</button>
+
+        </div>
+
+        <!-- Page 7: Summary -->
+        <div class="log-page" id="log-page-7">
+
+          <!-- Header info -->
+          <div class="summary-page-hero">
+            <div class="summary-page-date" id="summary-hero-date"></div>
+            <div class="summary-page-title" id="summary-hero-title"></div>
+            <div class="summary-pills" id="summary-hero-pills"></div>
+          </div>
+
+          <!-- 2x2 stat tiles -->
+          <div class="summary-stat-grid">
+            <div class="summary-stat-tile">
+              <div class="summary-stat-label">Training Type</div>
+              <div class="summary-stat-value" id="sum-type"></div>
+            </div>
+            <div class="summary-stat-tile">
+              <div class="summary-stat-label">Format</div>
+              <div class="summary-stat-value" id="sum-format"></div>
+            </div>
+            <div class="summary-stat-tile">
+              <div class="summary-stat-label">Intensity</div>
+              <div class="summary-stat-value" id="sum-intensity"></div>
+            </div>
+            <div class="summary-stat-tile">
+              <div class="summary-stat-label">Energy</div>
+              <div class="summary-stat-value" id="sum-energy"></div>
+            </div>
+          </div>
+
+          <!-- Trained at / Coached by -->
+          <div class="summary-info-row" id="sum-academy-row">
+            <div class="summary-info-icon" id="sum-academy-icon"></div>
+            <div class="summary-info-text">
+              <div class="summary-info-label">Trained at</div>
+              <div class="summary-info-value" id="sum-academy"></div>
+            </div>
+          </div>
+
+          <div class="summary-info-row" id="sum-coach-row">
+            <div class="summary-info-icon" id="sum-coach-icon"></div>
+            <div class="summary-info-text">
+              <div class="summary-info-label">Coached by</div>
+              <div class="summary-info-value" id="sum-coach"></div>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="summary-notes" id="sum-notes-section">
+            <div class="summary-section-heading">Notes</div>
+            <div class="summary-notes-text" id="sum-notes"></div>
+          </div>
+
+          <!-- Drilled techniques -->
+          <div class="summary-techniques" id="sum-drilled-section">
+            <div class="summary-section-heading">Drilled</div>
+            <div class="summary-tech-tags" id="sum-drilled-tags"></div>
+          </div>
+
+          <!-- Applied techniques -->
+          <div class="summary-techniques" id="sum-applied-section">
+            <div class="summary-section-heading">Applied in Sparring</div>
+            <div class="summary-tech-tags" id="sum-applied-tags"></div>
+          </div>
+
+          <!-- Done button -->
+          <button id="summary-done-btn" class="primary-btn">Done</button>
+
+        </div>
 
       </div>
     </div>
@@ -366,6 +509,8 @@
   <script src="js/log-academy.js"></script>
   <script src="js/coach-store.js"></script>
   <script src="js/technique-picker.js"></script>
+  <script src="js/log-details.js"></script>
+  <script src="js/log-summary.js"></script>
   <script src="js/log-coach.js"></script>
   <script src="js/router.js"></script>
   <script src="js/navbar.js"></script>
