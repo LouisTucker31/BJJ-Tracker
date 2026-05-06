@@ -8,6 +8,11 @@ html, body {
   overflow: hidden;
 }
 
+/* Compensate for black-translucent status bar */
+#app {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
 /* ─── App shell ──────────────────────────────────── */
 #app {
   display: flex;
