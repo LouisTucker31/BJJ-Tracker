@@ -67,6 +67,48 @@
   font-weight: 600;
   letter-spacing: -0.4px;
   color: var(--color-label-primary, #000);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#log-sheet-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007AFF;
+  font-size: 17px;
+  font-family: var(--font-system);
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#log-sheet-back.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#log-sheet-back:active {
+  opacity: 0.5;
+}
+
+#log-sheet-back svg {
+  width: 10px;
+  height: 16px;
+  stroke: #007AFF;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+#log-sheet-header {
+  position: relative;
 }
 
 #log-sheet-close {
