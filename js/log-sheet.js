@@ -6,6 +6,7 @@ const LogSheet = (() => {
   let handleArea = null;
 
   let previousPage  = 'home';
+  let sheetOpen     = false;
   let dragStartY    = 0;
   let dragCurrentY  = 0;
   let isDragging    = false;
@@ -16,16 +17,22 @@ const LogSheet = (() => {
 
   function open() {
     previousPage = Router.getCurrentPage();
+    sheetOpen    = true;
     sheet.classList.add('open');
     backdrop.classList.add('visible');
     document.body.style.overflow = 'hidden';
   }
 
   function close() {
+    sheetOpen = false;
     sheet.classList.remove('open');
     backdrop.classList.remove('visible');
     document.body.style.overflow = '';
     NavBar.setActiveByTarget(previousPage);
+  }
+
+  function isOpen() {
+    return sheetOpen;
   }
 
   function onDragStart(e) {
@@ -84,6 +91,6 @@ const LogSheet = (() => {
     document.addEventListener('mouseup', onDragEnd);
   }
 
-  return { init, open, close };
+  return { init, open, close, isOpen };
 
 })();

@@ -12,7 +12,7 @@
   padding-right: calc(env(safe-area-inset-right, 0px) + 24px);
 
   background: transparent;
-  z-index: 100;
+  z-index: 150;
   flex-shrink: 0;
 }
 

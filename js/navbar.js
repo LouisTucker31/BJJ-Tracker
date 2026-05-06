@@ -40,9 +40,18 @@ const NavBar = (() => {
         const target = item.dataset.target;
 
         if (target === 'log') {
-          setActive(item);
-          LogSheet.open();
+          if (LogSheet.isOpen()) {
+            LogSheet.close();
+          } else {
+            setActive(item);
+            LogSheet.open();
+          }
           return;
+        }
+
+        // If sheet is open and user taps another tab — close sheet and navigate
+        if (LogSheet.isOpen()) {
+          LogSheet.close();
         }
 
         setActive(item);
