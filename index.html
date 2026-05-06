@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BJJ" />
@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/app.css" />
   <link rel="stylesheet" href="css/navbar.css" />
   <link rel="stylesheet" href="css/transitions.css" />
+  <link rel="stylesheet" href="css/log-sheet.css" />
 </head>
 <body>
 
@@ -25,7 +26,7 @@
     <main id="page-container">
       <div id="page-home"     class="page active"    data-page="home"></div>
       <div id="page-sessions" class="page"           data-page="sessions"></div>
-      <div id="page-log"      class="page"           data-page="log"></div>
+      <div id="page-log"      class="page"           data-page="log" style="display:none"></div>
       <div id="page-insights" class="page"           data-page="insights"></div>
       <div id="page-profile"  class="page"           data-page="profile"></div>
     </main>
@@ -88,11 +89,31 @@
 
     </div>
     </nav>
-  </div>
 
+    <!-- Log slide-up sheet -->
+    <div id="log-backdrop"></div>
+    <div id="log-sheet" role="dialog" aria-modal="true" aria-label="Log session">
+      <div id="log-sheet-handle-area">
+        <div id="log-sheet-handle"></div>
+      </div>
+      <div id="log-sheet-header">
+        <span id="log-sheet-title">Log Session</span>
+        <button id="log-sheet-close" aria-label="Close">
+          <svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1l10 10M11 1L1 11"/>
+          </svg>
+        </button>
+      </div>
+      <div id="log-sheet-body">
+        <!-- Session form goes here -->
+      </div>
+    </div>
+
+  </div>
   <!-- Scripts -->
   <script src="js/router.js"></script>
   <script src="js/navbar.js"></script>
+  <script src="js/log-sheet.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

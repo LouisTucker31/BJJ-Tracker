@@ -6,7 +6,7 @@
  */
 
 const Router = (() => {
-  const PAGE_ORDER = ['home', 'sessions', 'log', 'insights', 'profile'];
+  const PAGE_ORDER = ['home', 'sessions', 'insights', 'profile'];
 
   let currentPage = 'home';
   let isTransitioning = false;

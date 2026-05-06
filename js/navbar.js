@@ -53,6 +53,14 @@ const NavBar = (() => {
     navItems.forEach(item => {
       item.addEventListener('click', () => {
         const target = item.dataset.target;
+
+        if (target === 'log') {
+          // Log tab opens sheet — don't navigate pages
+          setActive(item);
+          LogSheet.open();
+          return;
+        }
+
         setActive(item);
         Router.navigate(target);
       });
@@ -77,5 +85,10 @@ const NavBar = (() => {
     });
   }
 
-  return { init, setActive, movePillTo };
+  function setActiveByTarget(target) {
+    const item = navItems.find(i => i.dataset.target === target);
+    if (item) setActive(item);
+  }
+
+  return { init, setActive, setActiveByTarget, movePillTo };
 })();

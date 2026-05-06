@@ -6,6 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Initialise navigation
   NavBar.init();
+  LogSheet.init();
 
   // PWA: register service worker if supported
   if ('serviceWorker' in navigator) {
