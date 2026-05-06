@@ -1,0 +1,139 @@
+/* ─── Outer bar — transparent, just holds safe area ─ */
+#bottom-nav {
+  position: relative;
+  display: flex;
+  align-items: flex-start;   /* track sits at top, safe area is below */
+  justify-content: center;
+
+  height: calc(var(--nav-inner-height) + env(safe-area-inset-bottom, 0px));
+  padding-top: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left:  calc(env(safe-area-inset-left,  0px) + 16px);
+  padding-right: calc(env(safe-area-inset-right, 0px) + 16px);
+
+  background: transparent;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+/* ─── Floating pill bar — the visible nav container ─ */
+#nav-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 100%;   /* outer bar padding handles side insets */
+  height: 58px;
+  border-radius: 100px;
+  padding: 0 4px;
+
+  /* Glass pill */
+  background: var(--nav-outer-pill-bg);
+  backdrop-filter: saturate(200%) blur(28px);
+  -webkit-backdrop-filter: saturate(200%) blur(28px);
+
+  /* 3D edge: bright top highlight + soft shadow beneath */
+  box-shadow: var(--nav-outer-pill-shadow);
+  border-top: 1px solid var(--nav-outer-pill-border);
+
+  /* Subtle inner bevel */
+  outline: 0.5px solid rgba(0, 0, 0, 0.04);
+}
+
+/* ─── Animated active indicator pill ─────────────── */
+#nav-pill {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: calc(100% - 12px);
+  max-height: 46px;
+  border-radius: 100px;
+
+  /* White glass — not blue */
+  background: var(--nav-pill-bg);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.10),
+    0 0 0 0.5px rgba(255, 255, 255, 0.60) inset,
+    0 1px 0 rgba(255, 255, 255, 0.95) inset;
+
+  pointer-events: none;
+  z-index: 0;
+
+  transition:
+    left     var(--duration-mid) var(--ease-spring),
+    width    var(--duration-mid) var(--ease-spring),
+    opacity  var(--duration-fast) var(--ease-smooth);
+
+  opacity: 0;
+}
+
+#nav-pill.ready {
+  opacity: 1;
+}
+
+/* ─── Nav items ──────────────────────────────────── */
+.nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+
+  flex: 1;
+  height: 58px;
+  min-width: 44px;
+  padding: 0 2px;
+
+  color: var(--nav-inactive-color);
+  z-index: 1;
+
+  transition: color var(--duration-fast) var(--ease-smooth);
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 100px;
+}
+
+/* Active state */
+.nav-item.active {
+  color: var(--nav-active-color);
+}
+
+/* ─── Icon ───────────────────────────────────────── */
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.nav-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  transition: stroke var(--duration-fast) var(--ease-smooth);
+}
+
+/* ─── Label ──────────────────────────────────────── */
+.nav-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+/* ─── Log (centre) button ────────────────────────── */
+.nav-item--log .nav-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ─── Press feedback ─────────────────────────────── */
+.nav-item:active .nav-icon {
+  transform: scale(0.86);
+}

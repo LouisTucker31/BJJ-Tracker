@@ -1,0 +1,59 @@
+html, body {
+  font-family: var(--font-system);
+  font-size: var(--font-size-base);
+  background-color: var(--color-bg);
+  color: var(--color-label-primary);
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ─── App shell ──────────────────────────────────── */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 430px;      /* iPhone max width */
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Page container ─────────────────────────────── */
+#page-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-bg);
+  /* bottom padding so content clears the nav bar */
+  padding-bottom: calc(var(--nav-inner-height) + var(--safe-bottom, 0px) + 8px);
+}
+
+/* ─── Individual pages ───────────────────────────── */
+.page {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  /* Hidden by default */
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.page.active {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Desktop: slightly wider shell with subtle shadow */
+@media (min-width: 500px) {
+  #app {
+    border-left:  1px solid var(--color-bg-tertiary);
+    border-right: 1px solid var(--color-bg-tertiary);
+    box-shadow: 0 0 48px rgba(0,0,0,0.08);
+  }
+}

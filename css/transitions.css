@@ -1,0 +1,125 @@
+/* ─────────────────────────────────────────────────
+   Page transitions
+   Strategy: cross-fade with a very subtle vertical
+   shift — feels native without being heavy.
+   ───────────────────────────────────────────────── */
+
+/* Pages about to leave */
+.page.exit-left,
+.page.exit-right {
+  pointer-events: none;
+  visibility: visible;
+}
+
+/* Entering from the right (navigate forward) */
+.page.enter-from-right {
+  animation: slideInFromRight var(--duration-mid) var(--ease-decel) forwards;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Leaving to the left (navigate forward) */
+.page.exit-to-left {
+  animation: slideOutToLeft var(--duration-mid) var(--ease-accel) forwards;
+  visibility: visible;
+  pointer-events: none;
+}
+
+/* Entering from the left (navigate back) */
+.page.enter-from-left {
+  animation: slideInFromLeft var(--duration-mid) var(--ease-decel) forwards;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Leaving to the right (navigate back) */
+.page.exit-to-right {
+  animation: slideOutToRight var(--duration-mid) var(--ease-accel) forwards;
+  visibility: visible;
+  pointer-events: none;
+}
+
+/* Cross-fade for same-level pages */
+.page.fade-in {
+  animation: pageFadeIn var(--duration-fast) var(--ease-smooth) forwards;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.page.fade-out {
+  animation: pageFadeOut var(--duration-fast) var(--ease-smooth) forwards;
+  visibility: visible;
+  pointer-events: none;
+}
+
+/* ─── Keyframes ─────────────────────────────────── */
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pageFadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-4px); }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .page.enter-from-right,
+  .page.exit-to-left,
+  .page.enter-from-left,
+  .page.exit-to-right,
+  .page.fade-in,
+  .page.fade-out {
+    animation-duration: 1ms !important;
+  }
+
+  #nav-pill {
+    transition-duration: 1ms !important;
+  }
+}
