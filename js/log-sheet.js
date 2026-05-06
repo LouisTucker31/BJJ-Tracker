@@ -18,6 +18,8 @@ const LogSheet = (() => {
   function open() {
     previousPage = Router.getCurrentPage();
     sheetOpen    = true;
+    LogPages.reset();
+    setSheetTitle('');
     sheet.classList.add('open');
     backdrop.classList.add('visible');
     document.body.style.overflow = 'hidden';
@@ -29,10 +31,52 @@ const LogSheet = (() => {
     backdrop.classList.remove('visible');
     document.body.style.overflow = '';
     NavBar.setActiveByTarget(previousPage);
+    setTimeout(() => LogPages.reset(), 450);
   }
 
   function isOpen() {
     return sheetOpen;
+  }
+
+  function setSheetTitle(text) {
+    const el = document.getElementById('log-sheet-title');
+    if (el) el.textContent = text;
+  }
+
+  function checkDirtyAndClose() {
+    if (!LogPages.getIsDirty()) {
+      close();
+      return;
+    }
+    // Show iOS-style confirmation — built in next step
+    showDiscardSheet();
+  }
+
+  function showDiscardSheet() {
+    const existing = document.getElementById('discard-action-sheet');
+    if (existing) existing.remove();
+
+    const sheet = document.createElement('div');
+    sheet.id = 'discard-action-sheet';
+    sheet.innerHTML = `
+      <div id="discard-sheet-inner">
+        <div id="discard-sheet-title">Discard Changes?</div>
+        <div id="discard-sheet-subtitle">Your session progress will be lost.</div>
+        <button id="discard-confirm">Discard Changes</button>
+      </div>
+      <button id="discard-cancel">Keep Editing</button>
+    `;
+    document.getElementById('app').appendChild(sheet);
+
+    requestAnimationFrame(() => sheet.classList.add('visible'));
+
+    document.getElementById('discard-confirm').addEventListener('click', () => {
+      sheet.remove();
+      close();
+    });
+    document.getElementById('discard-cancel').addEventListener('click', () => {
+      sheet.remove();
+    });
   }
 
   function onDragStart(e) {
@@ -62,7 +106,7 @@ const LogSheet = (() => {
     const velocity = delta / (Date.now() - dragStartTime);
 
     if (delta > DISMISS_THRESHOLD || velocity > VELOCITY_THRESHOLD) {
-      close();
+      checkDirtyAndClose();
     }
   }
 
@@ -77,8 +121,8 @@ const LogSheet = (() => {
       return;
     }
 
-    closeBtn.addEventListener('click', close);
-    backdrop.addEventListener('click', close);
+    closeBtn.addEventListener('click', checkDirtyAndClose);
+    backdrop.addEventListener('click', checkDirtyAndClose);
 
     handleArea.addEventListener('touchstart', onDragStart, { passive: true });
     document.addEventListener('touchmove', (e) => {
@@ -91,6 +135,6 @@ const LogSheet = (() => {
     document.addEventListener('mouseup', onDragEnd);
   }
 
-  return { init, open, close, isOpen };
+  return { init, open, close, isOpen, setSheetTitle };
 
 })();

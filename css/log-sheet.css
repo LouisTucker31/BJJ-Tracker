@@ -3,7 +3,7 @@
    ============================================================ */
 
 #log-backdrop {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.40);
   z-index: 98;
@@ -20,7 +20,7 @@
 }
 
 #log-sheet {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
@@ -131,5 +131,80 @@
   }
   #log-sheet-close svg {
     stroke: rgba(235, 235, 245, 0.60);
+  }
+}
+
+/* ─── Discard action sheet ───────────────────────── */
+#discard-action-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 8px 8px calc(env(safe-area-inset-bottom, 0px) + 8px) 8px;
+  background: rgba(0,0,0,0.40);
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events: none;
+}
+
+#discard-action-sheet.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#discard-sheet-inner {
+  background: var(--color-bg, #fff);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  text-align: center;
+  padding: 16px 16px 4px 16px;
+}
+
+#discard-sheet-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+  margin-bottom: 4px;
+}
+
+#discard-sheet-subtitle {
+  font-size: 13px;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 16px;
+}
+
+#discard-confirm {
+  width: 100%;
+  padding: 14px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #FF3B30;
+  background: none;
+  border: none;
+  border-top: 0.5px solid rgba(60,60,67,0.12);
+  cursor: pointer;
+  font-family: var(--font-system);
+}
+
+#discard-cancel {
+  width: 100%;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #007AFF;
+  background: var(--color-bg, #fff);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: var(--font-system);
+}
+
+@media (prefers-color-scheme: dark) {
+  #discard-sheet-inner,
+  #discard-cancel {
+    background: #2c2c2e;
   }
 }
