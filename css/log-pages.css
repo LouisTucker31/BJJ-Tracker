@@ -244,3 +244,511 @@
     background: #3a3a3c;
   }
 }
+
+/* ─── Academy page (Page 3) ──────────────────────── */
+.academy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.academy-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: border-color 200ms ease, background 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.academy-card.selected {
+  border-color: #007AFF;
+  background: rgba(0, 122, 255, 0.06);
+}
+
+.academy-card-icon {
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--color-bg, #fff);
+  flex-shrink: 0;
+}
+
+.academy-card-text {
+  flex: 1;
+}
+
+.academy-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+}
+
+.academy-card-location {
+  font-size: 12px;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-top: 2px;
+}
+
+.academy-card-check svg {
+  width: 20px;
+  height: 20px;
+  stroke: #007AFF;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.academy-card.selected .academy-card-check svg {
+  opacity: 1;
+}
+
+/* ─── Add item button ─────────────────────────────── */
+.add-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #007AFF;
+  transition: background 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-system);
+}
+
+.add-item-btn:active {
+  background: var(--color-bg-tertiary, #e5e5ea);
+}
+
+.add-item-btn-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #007AFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.add-item-btn-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+}
+
+/* ─── Inline form ─────────────────────────────────── */
+.inline-form {
+  margin-top: 16px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 16px;
+  padding: 20px 16px;
+  transition: opacity 200ms ease;
+}
+
+.inline-form.hidden {
+  display: none;
+}
+
+.inline-form-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+  margin-bottom: 16px;
+}
+
+.form-field {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.form-label-optional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--color-bg, #fff);
+  font-size: 16px;
+  font-family: var(--font-system);
+  color: var(--color-label-primary, #000);
+  outline: none;
+  transition: box-shadow 200ms ease;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 2px #007AFF;
+}
+
+/* ─── Icon picker ─────────────────────────────────── */
+.icon-picker {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.icon-option {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: var(--color-bg, #fff);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 150ms ease, transform 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.icon-option.selected {
+  border-color: #007AFF;
+  transform: scale(1.08);
+}
+
+/* ─── Form action buttons ─────────────────────────── */
+.inline-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-btn {
+  flex: 1;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-system);
+  transition: opacity 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.form-btn:active { opacity: 0.7; }
+
+.form-btn--primary {
+  background: #007AFF;
+  color: #fff;
+}
+
+.form-btn--secondary {
+  background: var(--color-bg-tertiary, #e5e5ea);
+  color: var(--color-label-primary, #000);
+}
+
+@media (prefers-color-scheme: dark) {
+  .academy-card { background: #2c2c2e; }
+  .academy-card-icon { background: #1c1c1e; }
+  .add-item-btn { background: #2c2c2e; }
+  .form-input { background: #2c2c2e; color: #fff; }
+  .inline-form { background: #2c2c2e; }
+  .icon-option { background: #1c1c1e; }
+  .form-btn--secondary { background: #3a3a3c; color: #fff; }
+}
+
+/* ─── Skip button ─────────────────────────────────── */
+.skip-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 12px;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  cursor: pointer;
+  font-family: var(--font-system);
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 150ms ease;
+}
+
+.skip-btn:active {
+  opacity: 0.5;
+}
+
+/* ─── Techniques page (Page 5) ───────────────────── */
+.technique-section {
+  margin-top: 20px;
+}
+
+.technique-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0 0 10px 0;
+  cursor: pointer;
+  font-family: var(--font-system);
+  -webkit-tap-highlight-color: transparent;
+  border-bottom: 2px solid transparent;
+  transition: border-color 200ms ease;
+}
+
+.technique-section-header.active {
+  border-bottom-color: #007AFF;
+}
+
+.technique-section-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-label-primary, #000);
+}
+
+.technique-section-hint {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-label-tertiary, rgba(60,60,67,0.3));
+  transition: color 200ms ease;
+}
+
+.technique-section-header.active .technique-section-hint {
+  color: #007AFF;
+}
+
+.technique-divider {
+  height: 1px;
+  background: var(--color-bg-tertiary, #e5e5ea);
+  margin: 20px 0;
+}
+
+.technique-empty {
+  font-size: 14px;
+  color: var(--color-label-tertiary, rgba(60,60,67,0.3));
+  padding: 6px 0 10px 0;
+}
+
+.technique-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.technique-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 6px 12px;
+  background: rgba(0, 122, 255, 0.10);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #007AFF;
+}
+
+.technique-tag-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.technique-tag-remove svg {
+  width: 10px;
+  height: 10px;
+  stroke: #007AFF;
+}
+
+/* ─── Category pills ──────────────────────────────── */
+.technique-picker-area {
+  margin-top: 24px;
+  border-top: 0.5px solid var(--color-bg-tertiary, #e5e5ea);
+  padding-top: 16px;
+}
+
+.technique-picker-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-bottom: 10px;
+}
+
+.category-pills {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border-radius: 100px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-label-primary, #000);
+  cursor: pointer;
+  font-family: var(--font-system);
+  transition: background 150ms ease, color 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.category-pill.active {
+  background: #007AFF;
+  color: #fff;
+}
+
+/* ─── Technique list panel ────────────────────────── */
+.technique-list-panel {
+  margin-top: 12px;
+  background: var(--color-bg-secondary, #f2f2f7);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.technique-list-panel.hidden {
+  display: none;
+}
+
+.technique-list-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 12px 16px 8px 16px;
+}
+
+.technique-list-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.technique-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-top: 0.5px solid var(--color-bg-tertiary, #e5e5ea);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-system);
+  -webkit-tap-highlight-color: transparent;
+  transition: background 120ms ease;
+}
+
+.technique-list-item:first-child {
+  border-top: none;
+}
+
+.technique-list-item:active {
+  background: var(--color-bg-tertiary, #e5e5ea);
+}
+
+.technique-list-item-text {
+  flex: 1;
+}
+
+.technique-list-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-label-primary, #000);
+}
+
+.technique-list-item-desc {
+  font-size: 12px;
+  color: var(--color-label-secondary, rgba(60,60,67,0.6));
+  margin-top: 2px;
+}
+
+.technique-list-item-check svg {
+  width: 18px;
+  height: 18px;
+  stroke: #007AFF;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.technique-list-item.selected .technique-list-item-check svg {
+  opacity: 1;
+}
+
+/* ─── Primary continue button ─────────────────────── */
+.primary-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 28px;
+  background: #007AFF;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-system);
+  transition: opacity 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.primary-btn:active {
+  opacity: 0.8;
+}
+
+@media (prefers-color-scheme: dark) {
+  .category-pill {
+    background: #2c2c2e;
+    color: #fff;
+  }
+  .technique-list-panel {
+    background: #2c2c2e;
+  }
+  .technique-list-item {
+    border-top-color: #3a3a3c;
+  }
+  .technique-list-item:active {
+    background: #3a3a3c;
+  }
+}

@@ -75,13 +75,12 @@
 #log-sheet-back {
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #007AFF;
-  font-size: 17px;
-  font-family: var(--font-system);
   padding: 0;
   opacity: 0;
   pointer-events: none;

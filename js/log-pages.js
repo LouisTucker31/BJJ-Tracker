@@ -74,11 +74,9 @@ const LogPages = (() => {
   function getIsDirty()   { return isDirty; }
 
   // ─── Header helpers ───────────────────────────────
-  function showBack(label) {
+  function showBack() {
     const btn = document.getElementById('log-sheet-back');
-    const lbl = document.getElementById('log-sheet-back-label');
     if (btn) btn.classList.add('visible');
-    if (lbl) lbl.textContent = label;
   }
 
   function hideBack() {
@@ -91,11 +89,19 @@ const LogPages = (() => {
       hideBack();
       LogSheet.setSheetTitle('');
     } else if (pageId === 'log-page-2') {
-      showBack('Rolling');
+      showBack();
       LogSheet.setSheetTitle('Rolling');
+    } else if (pageId === 'log-page-3') {
+      showBack();
+      LogSheet.setSheetTitle('Where did you train?');
+    } else if (pageId === 'log-page-4') {
+      showBack();
+      LogSheet.setSheetTitle('Who was your coach?');
+    } else if (pageId === 'log-page-5') {
+      showBack();
+      LogSheet.setSheetTitle('Techniques');
     }
   }
-
   // ─── Reset ───────────────────────────────────────
   function reset() {
     isDirty      = false;
@@ -152,6 +158,17 @@ const LogPages = (() => {
       });
     }
 
+    // Page 5 → Page 6: continue
+    const continueBtn = document.getElementById('techniques-continue-btn');
+    if (continueBtn) {
+      continueBtn.addEventListener('click', () => {
+        pushHistory('log-page-5');
+        LogSheet.setSheetTitle('Session Details');
+        showBack();
+        goTo('log-page-6');
+      });
+    }
+
     // Page 2 → Page 3: format tiles
     ['tile-regular', 'tile-comp-class', 'tile-open-mat', 'tile-private'].forEach(id => {
       const btn = document.getElementById(id);
@@ -162,12 +179,13 @@ const LogPages = (() => {
           const label = btn.querySelector('.format-tile-title').textContent;
           LogSheet.setSheetTitle(label);
           showBack('Session Type');
+          LogAcademy.renderList();
           goTo('log-page-3');
         });
       }
     });
   }
 
-  return { init, goTo, goBack, reset, setDirty, getIsDirty, showBack, hideBack };
+  return { init, goTo, goBack, reset, setDirty, getIsDirty, showBack, hideBack, pushHistory };
 
 })();

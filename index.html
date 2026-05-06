@@ -99,7 +99,6 @@
           <svg viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 2L2 10l8 8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span id="log-sheet-back-label">Back</span>
         </button>
         <span id="log-sheet-title"></span>
         <button id="log-sheet-close" aria-label="Close">
@@ -249,14 +248,165 @@
           </div>
         </div>
 
-        <!-- Page 3 onwards -->
-        <div class="log-page" id="log-page-3"></div>
+        <!-- Page 3: Academy -->
+        <div class="log-page" id="log-page-3">
+          <div class="log-page-heading">
+            <div class="log-page-title">Where did you train?</div>
+            <div class="log-page-date">Select or add an academy</div>
+          </div>
+
+          <!-- Saved academies list -->
+          <div id="academy-list" class="academy-list"></div>
+
+          <!-- Add academy button -->
+          <button id="add-academy-btn" class="add-item-btn">
+            <div class="add-item-btn-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span>Add Academy</span>
+          </button>
+
+          <!-- Inline add academy form (hidden by default) -->
+          <div id="add-academy-form" class="inline-form hidden">
+            <div class="inline-form-title">New Academy</div>
+
+            <div class="form-field">
+              <label class="form-label">Name</label>
+              <input class="form-input" id="academy-name-input" type="text" placeholder="e.g. Gracie Barra Bristol" maxlength="50" />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">Location <span class="form-label-optional">(optional)</span></label>
+              <input class="form-input" id="academy-location-input" type="text" placeholder="e.g. Bristol, UK" maxlength="60" />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">Icon</label>
+              <div class="icon-picker" id="academy-icon-picker">
+                <button class="icon-option selected" data-icon="dojo">🥋</button>
+                <button class="icon-option" data-icon="pin">📍</button>
+                <button class="icon-option" data-icon="star">⭐</button>
+                <button class="icon-option" data-icon="building">🏛️</button>
+                <button class="icon-option" data-icon="shield">🛡️</button>
+              </div>
+            </div>
+
+            <div class="inline-form-actions">
+              <button id="academy-cancel-btn" class="form-btn form-btn--secondary">Cancel</button>
+              <button id="academy-save-btn" class="form-btn form-btn--primary">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 4: Coach -->
+        <div class="log-page" id="log-page-4">
+          <div class="log-page-heading">
+            <div class="log-page-title">Who was your coach?</div>
+            <div class="log-page-date">Select, add, or skip</div>
+          </div>
+
+          <!-- Saved coaches list -->
+          <div id="coach-list" class="academy-list"></div>
+
+          <!-- Add coach button -->
+          <button id="add-coach-btn" class="add-item-btn">
+            <div class="add-item-btn-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span>Add Coach</span>
+          </button>
+
+          <!-- Inline add coach form -->
+          <div id="add-coach-form" class="inline-form hidden">
+            <div class="inline-form-title">New Coach</div>
+
+            <div class="form-field">
+              <label class="form-label">Name</label>
+              <input class="form-input" id="coach-name-input" type="text" placeholder="e.g. Professor Silva" maxlength="50" />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">Icon</label>
+              <div class="icon-picker" id="coach-icon-picker">
+                <button class="icon-option selected" data-icon="male">👨</button>
+                <button class="icon-option" data-icon="female">👩</button>
+                <button class="icon-option" data-icon="belt">🥋</button>
+                <button class="icon-option" data-icon="star">⭐</button>
+              </div>
+            </div>
+
+            <div class="inline-form-actions">
+              <button id="coach-cancel-btn" class="form-btn form-btn--secondary">Cancel</button>
+              <button id="coach-save-btn" class="form-btn form-btn--primary">Save</button>
+            </div>
+          </div>
+
+          <!-- Skip button -->
+          <button id="skip-coach-btn" class="skip-btn">No coach this session</button>
+        </div>
+
+        <!-- Page 5: Techniques -->
+        <div class="log-page" id="log-page-5">
+          <div class="log-page-heading">
+            <div class="log-page-title">Techniques</div>
+            <div class="log-page-date">What did you work on?</div>
+          </div>
+
+          <!-- Drilled section -->
+          <div class="technique-section" id="section-drilled">
+            <button class="technique-section-header" data-section="drilled">
+              <div class="technique-section-title">Drilled</div>
+              <div class="technique-section-hint">Tap to add</div>
+            </button>
+            <div id="drilled-empty" class="technique-empty">Nothing added yet</div>
+            <div id="drilled-tags" class="technique-tags"></div>
+          </div>
+
+          <div class="technique-divider"></div>
+
+          <!-- Applied in Sparring section -->
+          <div class="technique-section" id="section-applied">
+            <button class="technique-section-header" data-section="applied">
+              <div class="technique-section-title">Applied in Sparring</div>
+              <div class="technique-section-hint">Tap to add</div>
+            </button>
+            <div id="applied-empty" class="technique-empty">Nothing added yet</div>
+            <div id="applied-tags" class="technique-tags"></div>
+          </div>
+
+          <!-- Category pills + technique list -->
+          <div class="technique-picker-area">
+            <div class="technique-picker-label" id="technique-picker-label">
+              Select a category
+            </div>
+            <div id="technique-category-pills" class="category-pills"></div>
+            <div id="technique-list-panel" class="technique-list-panel hidden">
+              <div id="technique-list-title" class="technique-list-title"></div>
+              <div id="technique-list-items" class="technique-list-items"></div>
+            </div>
+          </div>
+
+          <!-- Continue button -->
+          <button id="techniques-continue-btn" class="primary-btn">Continue</button>
+        </div>
+
+        <!-- Page 6 onwards -->
+        <div class="log-page" id="log-page-6"></div>
 
       </div>
     </div>
 
   </div>
 
+  <script src="js/academy-store.js"></script>
+  <script src="js/log-academy.js"></script>
+  <script src="js/coach-store.js"></script>
+  <script src="js/technique-picker.js"></script>
+  <script src="js/log-coach.js"></script>
   <script src="js/router.js"></script>
   <script src="js/navbar.js"></script>
   <script src="js/log-sheet.js"></script>
