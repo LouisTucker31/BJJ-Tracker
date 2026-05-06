@@ -1,17 +1,14 @@
 /**
  * technique-picker.js
- * Two sections: Drills and Applied in Sparring.
- * Each has a dropdown button that opens a floating
- * overlay showing all techniques grouped by category.
- * Tapping a technique adds it as a tile and closes dropdown.
+ * Uses native <select> with <optgroup> for each category.
+ * Selecting a technique adds it as a tile.
  */
 
 const TechniquePicker = (() => {
 
-  let techniquesData  = null;
-  let drilledList     = [];
-  let appliedList     = [];
-  let activeSection   = null;
+  let techniquesData = null;
+  let drilledList    = [];
+  let appliedList    = [];
 
   // ─── Load data ────────────────────────────────────
   async function loadData() {
@@ -26,108 +23,60 @@ const TechniquePicker = (() => {
     return techniquesData;
   }
 
-  // ─── Render page ─────────────────────────────────
-  async function renderPage() {
-    await loadData();
-    renderTiles('drilled');
-    renderTiles('applied');
-  }
+  // ─── Populate a select element ───────────────────
+  function populateSelect(selectEl) {
+    if (!techniquesData || !selectEl) return;
 
-  // ─── Open dropdown ───────────────────────────────
-  function openDropdown(section) {
-    activeSection = section;
-
-    const dropdown = document.getElementById('technique-dropdown');
-    const title    = document.getElementById('technique-dropdown-title');
-    const list     = document.getElementById('technique-dropdown-list');
-
-    if (!dropdown || !list) return;
-
-    // Set title
-    if (title) title.textContent = section === 'drilled' ? 'Drills' : 'Applied in Sparring';
-
-    // Mark button as open
-    document.querySelectorAll('.tech-dropdown-btn').forEach(b => b.classList.remove('open'));
-    const btn = document.getElementById(`${section}-dropdown-btn`);
-    if (btn) btn.classList.add('open');
-
-    // Build grouped list
-    const currentList = section === 'drilled' ? drilledList : appliedList;
-    list.innerHTML = '';
+    // Clear existing options except placeholder
+    while (selectEl.options.length > 1) selectEl.remove(1);
 
     techniquesData.categories.forEach(cat => {
-      // Category heading
-      const heading = document.createElement('div');
-      heading.className = 'technique-group-heading';
-      heading.textContent = `${cat.icon} ${cat.name}`;
-      list.appendChild(heading);
-
-      // Techniques
+      const group = document.createElement('optgroup');
+      group.label = `${cat.icon} ${cat.name}`;
       cat.techniques.forEach(tech => {
-        const isSelected = currentList.some(t => t.id === tech.id);
-        const row = document.createElement('button');
-        row.className = `technique-row${isSelected ? ' selected' : ''}`;
-        row.dataset.id = tech.id;
-        row.innerHTML = `
-          <div class="technique-row-text">
-            <div class="technique-row-name">${tech.name}</div>
-            <div class="technique-row-desc">${tech.description}</div>
-          </div>
-          <div class="technique-row-check">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        `;
-        row.addEventListener('click', () => addTechnique(tech, row));
-        list.appendChild(row);
+        const option = document.createElement('option');
+        option.value = tech.id;
+        option.textContent = tech.name;
+        group.appendChild(option);
       });
+      selectEl.appendChild(group);
     });
-
-    // Show dropdown
-    dropdown.classList.remove('hidden');
-    requestAnimationFrame(() => dropdown.classList.add('visible'));
   }
 
-  // ─── Close dropdown ──────────────────────────────
-  function closeDropdown() {
-    const dropdown = document.getElementById('technique-dropdown');
-    if (!dropdown) return;
-
-    dropdown.classList.remove('visible');
-    setTimeout(() => {
-      dropdown.classList.add('hidden');
-    }, 220);
-
-    document.querySelectorAll('.tech-dropdown-btn').forEach(b => b.classList.remove('open'));
-    activeSection = null;
+  // ─── Find technique by id ────────────────────────
+  function findTechnique(id) {
+    if (!techniquesData) return null;
+    for (const cat of techniquesData.categories) {
+      const tech = cat.techniques.find(t => t.id === id);
+      if (tech) return tech;
+    }
+    return null;
   }
 
-  // ─── Add technique ───────────────────────────────
-  function addTechnique(tech, rowEl) {
-    const list = activeSection === 'drilled' ? drilledList : appliedList;
-    const idx  = list.findIndex(t => t.id === tech.id);
+  // ─── Handle selection ────────────────────────────
+  function handleSelect(selectEl, section) {
+    const id = selectEl.value;
+    if (!id) return;
 
-    if (idx > -1) {
-      list.splice(idx, 1);
-      if (rowEl) rowEl.classList.remove('selected');
-    } else {
+    const tech = findTechnique(id);
+    if (!tech) return;
+
+    const list = section === 'drilled' ? drilledList : appliedList;
+    const already = list.some(t => t.id === id);
+
+    if (!already) {
       list.push(tech);
-      if (rowEl) rowEl.classList.add('selected');
+      renderTiles(section);
+      LogPages.setDirty(true);
     }
 
-    renderTiles(activeSection);
-    LogPages.setDirty(true);
-
-    // Close after adding (not removing)
-    if (idx === -1) {
-      setTimeout(() => closeDropdown(), 200);
-    }
+    // Reset select back to placeholder
+    selectEl.value = '';
   }
 
   // ─── Render tiles ────────────────────────────────
   function renderTiles(section) {
-    const list   = section === 'drilled' ? drilledList : appliedList;
+    const list    = section === 'drilled' ? drilledList : appliedList;
     const tilesEl = document.getElementById(`${section}-tiles`);
     if (!tilesEl) return;
 
@@ -160,31 +109,38 @@ const TechniquePicker = (() => {
     renderTiles(section);
   }
 
+  // ─── Render page ─────────────────────────────────
+  async function renderPage() {
+    await loadData();
+    const drilledSelect = document.getElementById('drilled-select');
+    const appliedSelect = document.getElementById('applied-select');
+    populateSelect(drilledSelect);
+    populateSelect(appliedSelect);
+    renderTiles('drilled');
+    renderTiles('applied');
+  }
+
   // ─── Init ────────────────────────────────────────
   function init() {
-    // Dropdown buttons
-    document.querySelectorAll('.tech-dropdown-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const section = btn.dataset.section;
-        if (activeSection === section) {
-          closeDropdown();
-        } else {
-          openDropdown(section);
-        }
-      });
-    });
+    const drilledSelect = document.getElementById('drilled-select');
+    const appliedSelect = document.getElementById('applied-select');
 
-    // Close button
-    const closeBtn = document.getElementById('technique-dropdown-close');
-    if (closeBtn) closeBtn.addEventListener('click', closeDropdown);
+    if (drilledSelect) {
+      drilledSelect.addEventListener('change', () => handleSelect(drilledSelect, 'drilled'));
+    }
+    if (appliedSelect) {
+      appliedSelect.addEventListener('change', () => handleSelect(appliedSelect, 'applied'));
+    }
   }
 
   // ─── Reset ───────────────────────────────────────
   function reset() {
-    drilledList  = [];
-    appliedList  = [];
-    activeSection = null;
-    closeDropdown();
+    drilledList = [];
+    appliedList = [];
+    const drilledSelect = document.getElementById('drilled-select');
+    const appliedSelect = document.getElementById('applied-select');
+    if (drilledSelect) drilledSelect.value = '';
+    if (appliedSelect) appliedSelect.value = '';
     renderTiles('drilled');
     renderTiles('applied');
   }

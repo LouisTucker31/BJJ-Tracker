@@ -326,14 +326,11 @@
               <div class="tech-section-title">Drills</div>
               <div class="tech-section-sub">Browse and select techniques</div>
             </div>
-            <button class="tech-dropdown-btn" id="drilled-dropdown-btn" data-section="drilled">
-              <span class="tech-dropdown-label">Browse techniques</span>
-              <span class="tech-dropdown-chevron">
-                <svg viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 2l8 8 8-8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </button>
+            <div class="tech-select-wrap">
+              <select id="drilled-select" class="tech-select" data-section="drilled">
+                <option value="">Browse techniques...</option>
+              </select>
+            </div>
             <div id="drilled-tiles" class="tech-tiles"></div>
           </div>
 
@@ -343,33 +340,15 @@
               <div class="tech-section-title">Applied in Sparring</div>
               <div class="tech-section-sub">Browse and select techniques</div>
             </div>
-            <button class="tech-dropdown-btn" id="applied-dropdown-btn" data-section="applied">
-              <span class="tech-dropdown-label">Browse techniques</span>
-              <span class="tech-dropdown-chevron">
-                <svg viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 2l8 8 8-8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </button>
+            <div class="tech-select-wrap">
+              <select id="applied-select" class="tech-select" data-section="applied">
+                <option value="">Browse techniques...</option>
+              </select>
+            </div>
             <div id="applied-tiles" class="tech-tiles"></div>
           </div>
 
           <button id="techniques-continue-btn" class="primary-btn">Continue</button>
-
-          <!-- Floating dropdown overlay -->
-          <div id="technique-dropdown" class="technique-dropdown hidden">
-            <div class="technique-dropdown-inner">
-              <div class="technique-dropdown-header">
-                <span id="technique-dropdown-title"></span>
-                <button id="technique-dropdown-close">
-                  <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1l10 10M11 1L1 11" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </button>
-              </div>
-              <div id="technique-dropdown-list" class="technique-dropdown-list"></div>
-            </div>
-          </div>
 
         </div>
 
