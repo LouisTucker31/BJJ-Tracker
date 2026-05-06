@@ -4,7 +4,10 @@
 
 #log-backdrop {
   position: fixed;
-  inset: 0;
+  top: -50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.40);
   z-index: 98;
   opacity: 0;
