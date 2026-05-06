@@ -699,7 +699,24 @@
   outline: none;
   cursor: pointer;
   flex: 1;
-  max-width: 160px;
+  min-width: 0;
+  display: block;
+}
+
+.details-select {
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-family: var(--font-system);
+  color: #007AFF;
+  text-align: right;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  min-width: 0;
+  text-align-last: right;
 }
 
 /* ─── Segmented control ──────────────────────────── */
@@ -841,7 +858,7 @@
 /* ─── Save button ────────────────────────────────── */
 .primary-btn--save {
   margin-top: 4px;
-  margin-bottom: 20px;
+  margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 48px);
   background: #34C759;
 }
 

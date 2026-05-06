@@ -41,7 +41,7 @@ const NavBar = (() => {
 
         if (target === 'log') {
           if (LogSheet.isOpen()) {
-            LogSheet.close();
+            LogSheet.checkDirtyAndClose();
           } else {
             setActive(item);
             LogSheet.open();
@@ -49,9 +49,13 @@ const NavBar = (() => {
           return;
         }
 
-        // If sheet is open and user taps another tab — close sheet and navigate
+        // If sheet is open — check dirty before navigating away
         if (LogSheet.isOpen()) {
-          LogSheet.close();
+          LogSheet.checkDirtyAndClose(() => {
+            setActive(item);
+            Router.navigate(target);
+          });
+          return;
         }
 
         setActive(item);
@@ -72,6 +76,11 @@ const NavBar = (() => {
     });
 
     window.addEventListener('resize', () => movePillTo(activeItem));
+  }
+
+  function setActiveByTarget(target) {
+    const item = navItems.find(i => i.dataset.target === target);
+    if (item) setActive(item);
   }
 
   return { init, setActive, setActiveByTarget, movePillTo };

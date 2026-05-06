@@ -133,7 +133,8 @@ const LogPages = (() => {
     return date.toLocaleDateString('en-GB', {
       weekday: 'long',
       day:     'numeric',
-      month:   'long'
+      month:   'long',
+      year:    'numeric'
     });
   }
 

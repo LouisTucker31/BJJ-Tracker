@@ -15,6 +15,15 @@ const LogDetails = (() => {
     input.max   = today;
   }
 
+  function formatDisplayDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    const day   = String(d.getDate()).padStart(2, '0');
+    const month = d.toLocaleDateString('en-GB', { month: 'short' });
+    const year  = d.getFullYear();
+    return `${day} ${month} ${year}`;
+  }
+
   // ─── Segmented controls ───────────────────────────
   function initSegmented() {
     document.querySelectorAll('.segmented-control').forEach(control => {

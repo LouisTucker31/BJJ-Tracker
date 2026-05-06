@@ -43,39 +43,49 @@ const LogSheet = (() => {
     if (el) el.textContent = text;
   }
 
-  function checkDirtyAndClose() {
+  function checkDirtyAndClose(onConfirm) {
     if (!LogPages.getIsDirty()) {
       close();
+      if (onConfirm) onConfirm();
       return;
     }
-    // Show iOS-style confirmation — built in next step
-    showDiscardSheet();
+    showDiscardSheet(onConfirm);
   }
 
-  function showDiscardSheet() {
+  function showDiscardSheet(onConfirm) {
     const existing = document.getElementById('discard-action-sheet');
     if (existing) existing.remove();
 
-    const sheet = document.createElement('div');
-    sheet.id = 'discard-action-sheet';
-    sheet.innerHTML = `
-      <div id="discard-sheet-inner">
-        <div id="discard-sheet-title">Discard Changes?</div>
-        <div id="discard-sheet-subtitle">Your session progress will be lost.</div>
-        <button id="discard-confirm">Discard Changes</button>
+    const el = document.createElement('div');
+    el.id = 'discard-action-sheet';
+    el.innerHTML = `
+      <div class="discard-overlay"></div>
+      <div class="discard-content">
+        <div class="discard-card discard-card--main">
+          <div class="discard-title">Discard Changes?</div>
+          <div class="discard-subtitle">Your session progress will be lost.</div>
+          <div class="discard-divider"></div>
+          <button class="discard-btn discard-btn--destructive" id="discard-confirm">Discard Changes</button>
+        </div>
+        <button class="discard-card discard-btn--cancel" id="discard-cancel">Keep Editing</button>
       </div>
-      <button id="discard-cancel">Keep Editing</button>
     `;
-    document.getElementById('app').appendChild(sheet);
+    document.getElementById('app').appendChild(el);
 
-    requestAnimationFrame(() => sheet.classList.add('visible'));
+    requestAnimationFrame(() => {
+      el.classList.add('visible');
+    });
 
     document.getElementById('discard-confirm').addEventListener('click', () => {
-      sheet.remove();
+      el.remove();
       close();
+      if (onConfirm) onConfirm();
     });
     document.getElementById('discard-cancel').addEventListener('click', () => {
-      sheet.remove();
+      el.remove();
+    });
+    el.querySelector('.discard-overlay').addEventListener('click', () => {
+      el.remove();
     });
   }
 
@@ -135,6 +145,6 @@ const LogSheet = (() => {
     document.addEventListener('mouseup', onDragEnd);
   }
 
-  return { init, open, close, isOpen, setSheetTitle };
+  return { init, open, close, isOpen, setSheetTitle, checkDirtyAndClose };
 
 })();
