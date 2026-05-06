@@ -12,7 +12,7 @@
   right: 0;
   bottom: 0;
   z-index: 99;
-  height: 98dvh;
+  height: 94dvh;
   background: var(--color-bg, #ffffff);
   border-radius: 20px 20px 0 0;
   box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.12), 0 -1px 0 rgba(0, 0, 0, 0.06);
