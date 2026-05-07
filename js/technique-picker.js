@@ -1,6 +1,7 @@
 /**
  * technique-picker.js
- * Techniques data embedded directly — no fetch needed.
+ * Custom slide-up picker panel for technique selection.
+ * Supports multiple selection, stays open until Done.
  */
 
 const TechniquePicker = (() => {
@@ -206,60 +207,110 @@ const TechniquePicker = (() => {
     ]
   };
 
-  let drilledList = [];
-  let appliedList = [];
+  let drilledList    = [];
+  let appliedList    = [];
+  let activeSection  = null; // 'drilled' | 'applied'
 
-  // ─── Populate a select element ───────────────────
-  function populateSelect(selectEl) {
-    if (!selectEl) return;
-    while (selectEl.options.length > 1) selectEl.remove(1);
+  // ─── Open picker ──────────────────────────────────
+  function openPicker(section) {
+    activeSection = section;
+
+    const panel    = document.getElementById('tech-picker-panel');
+    const backdrop = document.getElementById('tech-picker-backdrop');
+    const title    = document.getElementById('tech-picker-title');
+
+    if (!panel) return;
+
+    // Set title
+    if (title) {
+      title.textContent = section === 'drilled' ? 'Drills' : 'Applied in Sparring';
+    }
+
+    // Build list
+    buildPickerList(section);
+
+    // Remove hidden, then animate in
+    panel.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        panel.classList.add('visible');
+        if (backdrop) backdrop.classList.add('visible');
+      });
+    });
+  }
+
+  // ─── Close picker ─────────────────────────────────
+  function closePicker() {
+    const panel    = document.getElementById('tech-picker-panel');
+    const backdrop = document.getElementById('tech-picker-backdrop');
+
+    if (panel) {
+      panel.classList.remove('visible');
+      if (backdrop) backdrop.classList.remove('visible');
+      setTimeout(() => {
+        panel.classList.add('hidden');
+      }, 380);
+    }
+
+    activeSection = null;
+  }
+
+  // ─── Build picker list ────────────────────────────
+  function buildPickerList(section) {
+    const listEl = document.getElementById('tech-picker-list');
+    if (!listEl) return;
+
+    const currentList = section === 'drilled' ? drilledList : appliedList;
+    const isApplied   = section === 'applied';
+
+    listEl.innerHTML = '';
 
     TECHNIQUES_DATA.categories.forEach(cat => {
-      const group = document.createElement('optgroup');
-      group.label = `${cat.icon} ${cat.name}`;
+      // Category heading
+      const heading = document.createElement('div');
+      heading.className = 'tech-picker-category';
+      heading.textContent = `${cat.icon} ${cat.name}`;
+      listEl.appendChild(heading);
+
+      // Technique rows
       cat.techniques.forEach(tech => {
-        const option = document.createElement('option');
-        option.value = tech.id;
-        option.textContent = tech.name;
-        group.appendChild(option);
+        const isSelected = currentList.some(t => t.id === tech.id);
+        const row = document.createElement('div');
+        row.className = `tech-picker-row${isSelected ? (isApplied ? ' selected--applied' : ' selected') : ''}`;
+        row.dataset.id = tech.id;
+        row.innerHTML = `
+          <div>
+            <div class="tech-picker-row-name">${tech.name}</div>
+            <div class="tech-picker-row-desc">${tech.description}</div>
+          </div>
+          <div class="tech-picker-check">
+            <svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 5l3.5 3.5L11 1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        `;
+        row.addEventListener('click', () => toggleTechnique(tech, row, section));
+        listEl.appendChild(row);
       });
-      selectEl.appendChild(group);
     });
-
-    // Restore last selected position so picker opens near where user left off
-    const lastValue = selectEl.dataset.lastValue;
-    if (lastValue) {
-      selectEl.value = lastValue;
-    }
   }
 
-  // ─── Find technique by id ────────────────────────
-  function findTechnique(id) {
-    for (const cat of TECHNIQUES_DATA.categories) {
-      const tech = cat.techniques.find(t => t.id === id);
-      if (tech) return tech;
-    }
-    return null;
-  }
+  // ─── Toggle technique ─────────────────────────────
+  function toggleTechnique(tech, rowEl, section) {
+    const list     = section === 'drilled' ? drilledList : appliedList;
+    const isApplied = section === 'applied';
+    const idx      = list.findIndex(t => t.id === tech.id);
 
-  // ─── Handle selection ────────────────────────────
-  function handleSelect(selectEl, section) {
-    const id = selectEl.value;
-    if (!id) return;
-
-    const tech = findTechnique(id);
-    if (!tech) return;
-
-    const list = section === 'drilled' ? drilledList : appliedList;
-    if (!list.some(t => t.id === id)) {
+    if (idx > -1) {
+      list.splice(idx, 1);
+      rowEl.classList.remove('selected', 'selected--applied');
+    } else {
       list.push(tech);
-      renderTiles(section);
-      LogPages.setDirty(true);
+      rowEl.classList.add(isApplied ? 'selected--applied' : 'selected');
     }
 
-    // Remember which option was last selected so we can restore position
-    selectEl.dataset.lastValue = id;
-    selectEl.value = '';
+    renderTiles(section);
+    LogPages.setDirty(true);
   }
 
   // ─── Render tiles ────────────────────────────────
@@ -295,35 +346,34 @@ const TechniquePicker = (() => {
 
   // ─── Render page ─────────────────────────────────
   function renderPage() {
-    const drilledSelect = document.getElementById('drilled-select');
-    const appliedSelect = document.getElementById('applied-select');
-    populateSelect(drilledSelect);
-    populateSelect(appliedSelect);
     renderTiles('drilled');
     renderTiles('applied');
   }
 
   // ─── Init ────────────────────────────────────────
   function init() {
-    const drilledSelect = document.getElementById('drilled-select');
-    const appliedSelect = document.getElementById('applied-select');
+    // Add buttons
+    const drilledBtn = document.getElementById('drilled-add-btn');
+    const appliedBtn = document.getElementById('applied-add-btn');
 
-    if (drilledSelect) {
-      drilledSelect.addEventListener('change', () => handleSelect(drilledSelect, 'drilled'));
-    }
-    if (appliedSelect) {
-      appliedSelect.addEventListener('change', () => handleSelect(appliedSelect, 'applied'));
-    }
+    if (drilledBtn) drilledBtn.addEventListener('click', () => openPicker('drilled'));
+    if (appliedBtn) appliedBtn.addEventListener('click', () => openPicker('applied'));
+
+    // Done button
+    const doneBtn = document.getElementById('tech-picker-done');
+    if (doneBtn) doneBtn.addEventListener('click', closePicker);
+
+    // Backdrop
+    const backdrop = document.getElementById('tech-picker-backdrop');
+    if (backdrop) backdrop.addEventListener('click', closePicker);
   }
 
   // ─── Reset ───────────────────────────────────────
   function reset() {
-    drilledList = [];
-    appliedList = [];
-    const drilledSelect = document.getElementById('drilled-select');
-    const appliedSelect = document.getElementById('applied-select');
-    if (drilledSelect) drilledSelect.value = '';
-    if (appliedSelect) appliedSelect.value = '';
+    drilledList   = [];
+    appliedList   = [];
+    activeSection = null;
+    closePicker();
     renderTiles('drilled');
     renderTiles('applied');
   }

@@ -321,12 +321,7 @@
               <div class="tech-section-title">Drills</div>
               <div class="tech-section-sub">Browse and select techniques</div>
             </div>
-            <div class="tech-select-wrap">
-              <button class="tech-add-btn">+ Add Technique</button>
-              <select id="drilled-select" class="tech-select-hidden" data-section="drilled">
-                <option value="">Select...</option>
-              </select>
-            </div>
+            <button class="tech-add-btn" id="drilled-add-btn">+ Add Technique</button>
             <div id="drilled-tiles" class="tech-tiles"></div>
           </div>
 
@@ -336,17 +331,27 @@
               <div class="tech-section-title">Applied in Sparring</div>
               <div class="tech-section-sub">Browse and select techniques</div>
             </div>
-            <div class="tech-select-wrap">
-              <button class="tech-add-btn tech-add-btn--applied">+ Add Technique</button>
-              <select id="applied-select" class="tech-select-hidden" data-section="applied">
-                <option value="">Select...</option>
-              </select>
-            </div>
+            <button class="tech-add-btn tech-add-btn--applied" id="applied-add-btn">+ Add Technique</button>
             <div id="applied-tiles" class="tech-tiles"></div>
           </div>
 
           <button id="techniques-continue-btn" class="primary-btn">Continue</button>
 
+        </div>
+
+        <!-- Technique picker backdrop -->
+        <div id="tech-picker-backdrop" class="tech-picker-backdrop"></div>
+
+        <!-- Technique picker panel -->
+        <div id="tech-picker-panel" class="tech-picker-panel hidden">
+          <div class="tech-picker-handle-area">
+            <div class="tech-picker-handle"></div>
+          </div>
+          <div class="tech-picker-header">
+            <span class="tech-picker-title" id="tech-picker-title">Select Techniques</span>
+            <button class="tech-picker-done" id="tech-picker-done">Done</button>
+          </div>
+          <div class="tech-picker-list" id="tech-picker-list"></div>
         </div>
 
         <!-- Page 6: Session Details -->
