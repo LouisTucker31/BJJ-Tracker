@@ -16,6 +16,50 @@ const LogDetails = (() => {
     return `${day} ${month} ${year}`;
   }
 
+  // ─── Format time as "HH:MM" ──────────────────────
+  function formatDisplayTime(timeStr) {
+    if (!timeStr) return '';
+    return timeStr.slice(0, 5); // HH:MM
+  }
+
+  // ─── Init time picker ────────────────────────────
+  function initTime() {
+    const input   = document.getElementById('session-time');
+    const display = document.getElementById('session-time-display');
+    if (!input || !display) return;
+
+    // Default to current time rounded to nearest 15 min
+    const now     = new Date();
+    const minutes = Math.round(now.getMinutes() / 15) * 15;
+    const hours   = minutes === 60 ? now.getHours() + 1 : now.getHours();
+    const timeStr = `${String(hours % 24).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+    input.value   = timeStr;
+    display.textContent = formatDisplayTime(timeStr);
+
+    display.addEventListener('click', () => {
+      input.style.position      = 'fixed';
+      input.style.opacity       = '0';
+      input.style.top           = '0';
+      input.style.left          = '0';
+      input.style.width         = '100%';
+      input.style.height        = '100%';
+      input.style.zIndex        = '999';
+      input.style.pointerEvents = 'auto';
+      input.showPicker?.();
+      input.focus();
+      input.click();
+    });
+
+    input.addEventListener('change', () => {
+      if (display) display.textContent = formatDisplayTime(input.value);
+      input.style.cssText = '';
+    });
+
+    input.addEventListener('blur', () => {
+      input.style.cssText = '';
+    });
+  }
+
   // ─── Set today's date and max ─────────────────────
   function initDate() {
     const input   = document.getElementById('session-date');
@@ -108,6 +152,7 @@ const LogDetails = (() => {
   // ─── Get all values ───────────────────────────────
   function getValues() {
     const date      = document.getElementById('session-date')?.value;
+    const time      = document.getElementById('session-time')?.value;
     const duration  = document.getElementById('session-duration')?.value;
     const gi        = document.querySelector('#gi-control .seg-btn.active')?.dataset.value;
     const intensity = document.querySelector('#intensity-control .seg-btn.active')?.dataset.value;
@@ -116,7 +161,7 @@ const LogDetails = (() => {
     const drilled   = TechniquePicker.getDrilled();
     const applied   = TechniquePicker.getApplied();
 
-    return { date, duration, gi, intensity, energy: parseInt(energy), notes, drilled, applied };
+    return { date, time, duration, gi, intensity, energy: parseInt(energy), notes, drilled, applied };
   }
 
   // ─── Reset ────────────────────────────────────────
@@ -126,6 +171,18 @@ const LogDetails = (() => {
     const today   = new Date().toISOString().split('T')[0];
     if (input)   { input.value = today; input.max = today; }
     if (display)   display.textContent = formatDisplayDate(today);
+
+    // Reset time to current
+    const timeInput   = document.getElementById('session-time');
+    const timeDisplay = document.getElementById('session-time-display');
+    if (timeInput && timeDisplay) {
+      const now     = new Date();
+      const minutes = Math.round(now.getMinutes() / 15) * 15;
+      const hours   = minutes === 60 ? now.getHours() + 1 : now.getHours();
+      const timeStr = `${String(hours % 24).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+      timeInput.value          = timeStr;
+      timeDisplay.textContent  = timeStr.slice(0, 5);
+    }
 
     // Reset segmented controls to first option
     document.querySelectorAll('.segmented-control').forEach(control => {
@@ -153,6 +210,7 @@ const LogDetails = (() => {
   // ─── Init ─────────────────────────────────────────
   function init() {
     initDate();
+    initTime();
     initSegmented();
   }
 
