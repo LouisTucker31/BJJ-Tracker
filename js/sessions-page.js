@@ -369,6 +369,56 @@ const SessionsPage = (() => {
     if (currentView === 'techniques') renderTechniquesView();
   }
 
+  // ─── Drag to dismiss ──────────────────────────────
+  function initDragToDismiss() {
+    const sheet      = document.getElementById('session-view-sheet');
+    const backdrop   = document.getElementById('session-view-backdrop');
+    const handleArea = sheet?.querySelector('.session-view-handle-area');
+    const body       = document.getElementById('session-view-body');
+    if (!sheet || !handleArea || !body) return;
+
+    let startY    = 0;
+    let startTime = 0;
+    let dragging  = false;
+
+    const DISMISS_THRESHOLD  = 120;
+    const VELOCITY_THRESHOLD = 0.5;
+
+    handleArea.addEventListener('touchstart', e => {
+      startY    = e.touches[0].clientY;
+      startTime = Date.now();
+      dragging  = true;
+      sheet.classList.add('dragging');
+    }, { passive: true });
+
+    document.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const delta = Math.max(0, e.touches[0].clientY - startY);
+      sheet.style.transform = `translateY(${delta * 0.88}px)`;
+      if (backdrop) backdrop.style.opacity = (0.35 * (1 - Math.min(delta / 300, 1))).toString();
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+      if (!dragging) return;
+      dragging = false;
+      sheet.classList.remove('dragging');
+      sheet.style.transform = '';
+      if (backdrop) backdrop.style.opacity = '';
+
+      const delta    = e.changedTouches[0].clientY - startY;
+      const velocity = delta / (Date.now() - startTime);
+
+      if (delta > DISMISS_THRESHOLD || velocity > VELOCITY_THRESHOLD) {
+        closeDetail();
+      }
+    }, { passive: true });
+
+    // Prevent sheet scroll from propagating to page behind
+    body.addEventListener('touchmove', e => {
+      e.stopPropagation();
+    }, { passive: true });
+  }
+
   // ─── Init ─────────────────────────────────────────
   function init() {
     const seg = document.getElementById('sessions-seg');
@@ -378,12 +428,13 @@ const SessionsPage = (() => {
       });
     }
 
-    const closeBtn   = document.getElementById('session-view-close');
+    const closeBtn = document.getElementById('session-view-close');
     if (closeBtn) closeBtn.addEventListener('click', closeDetail);
 
     const backdrop = document.getElementById('session-view-backdrop');
     if (backdrop) backdrop.addEventListener('click', closeDetail);
 
+    initDragToDismiss();
     renderSessionsList();
   }
 

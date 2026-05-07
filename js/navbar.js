@@ -10,14 +10,25 @@ const NavBar = (() => {
     const trackRect = track.getBoundingClientRect();
     const itemRect  = item.getBoundingClientRect();
 
-    const pillH    = pill.offsetHeight || 36;
-    const vPad     = (itemRect.height - pillH) / 2;
-    const pillW    = Math.round(itemRect.width - vPad * 2) + 20;
+    // Vertical padding inside the track (same gap top & bottom)
+    const pillH  = pill.offsetHeight || 46;
+    const vPad   = (trackRect.height - pillH) / 2;   // e.g. (58 - 46) / 2 = 6px
+
+    // Pill width = item width, but clamped so it never bleeds outside the track's inner edge
+    const trackInnerLeft  = 4;  // matches #nav-track padding: 0 4px
+    const trackInnerRight = trackRect.width - 4;
     const centreX  = itemRect.left + itemRect.width / 2 - trackRect.left;
-    const pillLeft = Math.round(centreX - pillW / 2);
+    const halfW    = Math.round(itemRect.width / 2);
+    const rawLeft  = centreX - halfW;
+    const rawRight = centreX + halfW;
+
+    // Clamp to inner track bounds
+    const clampedLeft  = Math.max(trackInnerLeft,  rawLeft);
+    const clampedRight = Math.min(trackInnerRight, rawRight);
+    const pillW = clampedRight - clampedLeft;
 
     pill.style.width = `${pillW}px`;
-    pill.style.left  = `${pillLeft}px`;
+    pill.style.left  = `${clampedLeft}px`;
   }
 
   function setActive(item) {
