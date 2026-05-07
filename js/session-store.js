@@ -30,6 +30,15 @@ const SessionStore = (() => {
     localStorage.setItem(KEY, JSON.stringify(all));
   }
 
-  return { getAll, save, getById, remove };
+  function update(id, changes) {
+    const all     = getAll();
+    const idx     = all.findIndex(s => s.id === id);
+    if (idx === -1) return null;
+    all[idx] = { ...all[idx], ...changes };
+    localStorage.setItem(KEY, JSON.stringify(all));
+    return all[idx];
+  }
+
+  return { getAll, save, getById, remove, update };
 
 })();
