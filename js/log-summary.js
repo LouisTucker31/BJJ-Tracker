@@ -92,10 +92,11 @@ const LogSummary = (() => {
 
     // ── Coach ──
     const coachRow = document.getElementById('sum-coach-row');
-    if (coach) {
-      setText('sum-coach', coach.name);
+    const coaches  = Array.isArray(coach) ? coach : (coach ? [coach] : []);
+    if (coaches.length > 0) {
+      setText('sum-coach', coaches.map(c => c.name).join(', '));
       const iconEl = document.getElementById('sum-coach-icon');
-      if (iconEl) iconEl.textContent = COACH_ICONS[coach.icon] || '👨';
+      if (iconEl) iconEl.textContent = COACH_ICONS[coaches[0].icon] || '👨';
       if (coachRow) coachRow.style.display = '';
     } else {
       if (coachRow) coachRow.style.display = 'none';

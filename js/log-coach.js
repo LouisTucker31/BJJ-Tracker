@@ -1,12 +1,13 @@
 /**
  * log-coach.js
  * Handles the coach selection page (Page 4).
+ * Supports multiple coach selection.
  */
 
 const LogCoach = (() => {
 
-  let selectedCoach = null;
-  let selectedIcon  = 'male';
+  let selectedCoaches = [];
+  let selectedIcon    = 'male';
 
   const ICONS = {
     male:   '👨',
@@ -25,6 +26,7 @@ const LogCoach = (() => {
 
     if (coaches.length === 0) {
       list.style.display = 'none';
+      updateContinueBtn();
       return;
     }
 
@@ -33,6 +35,10 @@ const LogCoach = (() => {
       const card = document.createElement('button');
       card.className = 'academy-card';
       card.dataset.id = coach.id;
+
+      const isSelected = selectedCoaches.some(c => c.id === coach.id);
+      if (isSelected) card.classList.add('selected');
+
       card.innerHTML = `
         <div class="academy-card-icon">${ICONS[coach.icon] || '👨'}</div>
         <div class="academy-card-text">
@@ -44,29 +50,35 @@ const LogCoach = (() => {
           </svg>
         </div>
       `;
-      card.addEventListener('click', () => selectCoach(coach, card));
+      card.addEventListener('click', () => toggleCoach(coach, card));
       list.appendChild(card);
     });
+
+    updateContinueBtn();
   }
 
-  // ─── Select coach ─────────────────────────────────
-  function selectCoach(coach, cardEl) {
-    selectedCoach = coach;
-    document.querySelectorAll('#coach-list .academy-card').forEach(c => c.classList.remove('selected'));
-    cardEl.classList.add('selected');
-
-    setTimeout(() => {
-      LogPages.pushHistory('log-page-4');
-      LogSheet.setSheetTitle('Techniques');
-      LogPages.showBack();
-      TechniquePicker.renderPage();
-      LogPages.goTo('log-page-5');
-    }, 220);
+  // ─── Toggle coach selection ───────────────────────
+  function toggleCoach(coach, cardEl) {
+    const idx = selectedCoaches.findIndex(c => c.id === coach.id);
+    if (idx > -1) {
+      selectedCoaches.splice(idx, 1);
+      cardEl.classList.remove('selected');
+    } else {
+      selectedCoaches.push(coach);
+      cardEl.classList.add('selected');
+    }
+    updateContinueBtn();
   }
 
-  // ─── Skip ─────────────────────────────────────────
-  function skip() {
-    selectedCoach = null;
+  // ─── Show/hide continue button ────────────────────
+  function updateContinueBtn() {
+    const btn = document.getElementById('coach-continue-btn');
+    if (!btn) return;
+    btn.style.display = selectedCoaches.length > 0 ? '' : 'none';
+  }
+
+  // ─── Advance to next page ─────────────────────────
+  function advance() {
     LogPages.pushHistory('log-page-4');
     LogSheet.setSheetTitle('Techniques');
     LogPages.showBack();
@@ -129,7 +141,13 @@ const LogCoach = (() => {
     if (saveBtn) saveBtn.addEventListener('click', saveCoach);
 
     const skipBtn = document.getElementById('skip-coach-btn');
-    if (skipBtn) skipBtn.addEventListener('click', skip);
+    if (skipBtn) skipBtn.addEventListener('click', () => {
+      selectedCoaches = [];
+      advance();
+    });
+
+    const continueBtn = document.getElementById('coach-continue-btn');
+    if (continueBtn) continueBtn.addEventListener('click', advance);
 
     document.querySelectorAll('#coach-icon-picker .icon-option').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -140,10 +158,10 @@ const LogCoach = (() => {
     });
   }
 
-  function getSelected() { return selectedCoach; }
+  function getSelected() { return selectedCoaches; }
 
   function reset() {
-    selectedCoach = null;
+    selectedCoaches = [];
     hideForm();
     renderList();
   }

@@ -252,6 +252,11 @@ const TechniquePicker = (() => {
     }
 
     selectEl.value = '';
+
+    // Re-open picker so user can select another without tapping Add again
+    setTimeout(() => {
+      try { selectEl.showPicker?.(); } catch(e) {}
+    }, 100);
   }
 
   // ─── Render tiles ────────────────────────────────
