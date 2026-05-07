@@ -5,15 +5,19 @@ const NavBar = (() => {
   let navItems   = [];
   let activeItem = null;
 
-  const PILL_WIDTH = 72;
+  const PILL_PADDING = 8; // equal padding on all sides
 
   function movePillTo(item) {
     if (!pill || !track || !item) return;
     const trackRect = track.getBoundingClientRect();
     const itemRect  = item.getBoundingClientRect();
-    const centreX   = itemRect.left + itemRect.width / 2 - trackRect.left;
-    const pillLeft  = Math.round(centreX - PILL_WIDTH / 2);
-    pill.style.width = `${PILL_WIDTH}px`;
+
+    // Pill width = item width minus equal padding each side
+    const pillW    = Math.round(itemRect.width - PILL_PADDING * 2);
+    const centreX  = itemRect.left + itemRect.width / 2 - trackRect.left;
+    const pillLeft = Math.round(centreX - pillW / 2);
+
+    pill.style.width = `${pillW}px`;
     pill.style.left  = `${pillLeft}px`;
   }
 
@@ -55,6 +59,34 @@ const NavBar = (() => {
             setActive(item);
             Router.navigate(target);
           });
+          return;
+        }
+
+        // If already on this tab — close any open sub-sheets and scroll to top
+        if (target === Router.getCurrentPage()) {
+          // Close sessions detail sheet if open
+          if (target === 'sessions') {
+            const sessionSheet = document.getElementById('session-view-sheet');
+            const sessionBackdrop = document.getElementById('session-view-backdrop');
+            if (sessionSheet && sessionSheet.classList.contains('open')) {
+              sessionSheet.classList.remove('open');
+              if (sessionBackdrop) sessionBackdrop.classList.remove('visible');
+              return;
+            }
+            // Close technique picker if open
+            const techPanel = document.getElementById('tech-picker-panel');
+            if (techPanel && techPanel.classList.contains('visible')) {
+              techPanel.classList.remove('visible');
+              return;
+            }
+            // Scroll to top
+            const activeView = document.querySelector('.sessions-view.active');
+            if (activeView) activeView.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            // Scroll active page to top
+            const page = document.getElementById(`page-${target}`);
+            if (page) page.scrollTo({ top: 0, behavior: 'smooth' });
+          }
           return;
         }
 
