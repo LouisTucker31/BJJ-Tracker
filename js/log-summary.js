@@ -12,13 +12,14 @@ const LogSummary = (() => {
   const ACADEMY_ICONS    = { dojo: '🥋', pin: '📍', home: '🏠', building: '🏛️', shield: '🛡️' };
   const COACH_ICONS      = { male: '👨', female: '👩', shirt: '🎽', medal: '🎖️' };
 
-  // ─── Format date ──────────────────────────────────
-  function formatDate(dateStr) {
+  // ─── Format date + time ───────────────────────────
+  function formatDate(dateStr, timeStr) {
     if (!dateStr) return '';
-    const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('en-GB', {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-    });
+    const d   = new Date(dateStr + 'T00:00:00');
+    const day = String(d.getDate()).padStart(2, '0');
+    const mon = d.toLocaleDateString('en-GB', { month: 'short' });
+    const datePart = `${day} ${mon} ${d.getFullYear()}`;
+    return timeStr ? `${datePart} · ${timeStr.slice(0, 5)}` : datePart;
   }
 
   // ─── Format duration ──────────────────────────────
@@ -43,7 +44,7 @@ const LogSummary = (() => {
 
     // ── Hero date ──
     const heroDate = document.getElementById('summary-hero-date');
-    if (heroDate) heroDate.textContent = formatDate(details.date);
+    if (heroDate) heroDate.textContent = formatDate(details.date, details.time);
 
     // ── Hero title ──
     const heroTitle = document.getElementById('summary-hero-title');

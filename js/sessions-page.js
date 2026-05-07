@@ -21,12 +21,13 @@ const SessionsPage = (() => {
     return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
   }
 
-  function formatFullDate(dateStr) {
+  function formatFullDate(dateStr, timeStr) {
     if (!dateStr) return '';
     const d   = new Date(dateStr + 'T00:00:00');
     const day = String(d.getDate()).padStart(2, '0');
     const mon = d.toLocaleDateString('en-GB', { month: 'short' });
-    return `${day} ${mon} ${d.getFullYear()}`;
+    const datePart = `${day} ${mon} ${d.getFullYear()}`;
+    return timeStr ? `${datePart} · ${timeStr.slice(0, 5)}` : datePart;
   }
 
   function formatMonthGroup(dateStr) {
@@ -133,7 +134,7 @@ const SessionsPage = (() => {
 
     body.innerHTML = `
       <div class="summary-page-hero" style="padding: 0 0 16px 0;">
-        <div class="summary-page-date">${formatFullDate(session.date)}</div>
+        <div class="summary-page-date">${formatFullDate(session.date, session.time)}</div>
         <div class="summary-pills" style="margin-top:8px;">
           ${session.academy?.location ? `<div class="summary-pill"><span>📍</span><span>${session.academy.location}</span></div>` : ''}
           <div class="summary-pill"><span>⏱️</span><span>${formatDuration(session.duration)}</span></div>
