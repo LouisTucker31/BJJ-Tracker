@@ -225,6 +225,12 @@ const TechniquePicker = (() => {
       });
       selectEl.appendChild(group);
     });
+
+    // Restore last selected position so picker opens near where user left off
+    const lastValue = selectEl.dataset.lastValue;
+    if (lastValue) {
+      selectEl.value = lastValue;
+    }
   }
 
   // ─── Find technique by id ────────────────────────
@@ -251,12 +257,9 @@ const TechniquePicker = (() => {
       LogPages.setDirty(true);
     }
 
+    // Remember which option was last selected so we can restore position
+    selectEl.dataset.lastValue = id;
     selectEl.value = '';
-
-    // Re-open picker so user can select another without tapping Add again
-    setTimeout(() => {
-      try { selectEl.showPicker?.(); } catch(e) {}
-    }, 100);
   }
 
   // ─── Render tiles ────────────────────────────────
