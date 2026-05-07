@@ -12,7 +12,7 @@ const NavBar = (() => {
 
     const pillH    = pill.offsetHeight || 36;
     const vPad     = (itemRect.height - pillH) / 2;
-    const pillW    = Math.round(itemRect.width - vPad * 2) + 8;
+    const pillW    = Math.round(itemRect.width - vPad * 2) + 20;
     const centreX  = itemRect.left + itemRect.width / 2 - trackRect.left;
     const pillLeft = Math.round(centreX - pillW / 2);
 
