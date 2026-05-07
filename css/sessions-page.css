@@ -9,7 +9,7 @@
 /* ─── Page header ────────────────────────────────── */
 .sessions-header {
   background: var(--color-bg, #fff);
-  padding: 16px 20px 0 20px;
+  padding: 16px 20px 12px 20px;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -30,7 +30,7 @@
   background: var(--color-bg-secondary, #f2f2f7);
   border-radius: 10px;
   padding: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   gap: 2px;
 }
 
