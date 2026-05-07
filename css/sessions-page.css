@@ -326,7 +326,7 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  padding: 0 16px 20px 16px;
+  padding: 0 16px calc(env(safe-area-inset-bottom, 0px) + 92px) 16px;
   min-height: 0;
 }
 /* ─── Techniques view ────────────────────────────── */
