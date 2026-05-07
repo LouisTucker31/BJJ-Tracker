@@ -227,10 +227,12 @@ const SessionsPage = (() => {
       };
     }
 
-    // Show sheet and backdrop
+    // Show sheet and lock background scroll
     sheet.classList.add('open');
     const backdrop = document.getElementById('session-view-backdrop');
     if (backdrop) backdrop.classList.add('visible');
+    document.getElementById('sessions-list-view')?.style.setProperty('overflow', 'hidden');
+    document.getElementById('sessions-techniques-view')?.style.setProperty('overflow', 'hidden');
   }
 
   // ─── Close detail ─────────────────────────────────
@@ -239,6 +241,8 @@ const SessionsPage = (() => {
     const backdrop = document.getElementById('session-view-backdrop');
     if (sheet)    sheet.classList.remove('open');
     if (backdrop) backdrop.classList.remove('visible');
+    document.getElementById('sessions-list-view')?.style.removeProperty('overflow');
+    document.getElementById('sessions-techniques-view')?.style.removeProperty('overflow');
   }
 
   // ─── Render techniques view ───────────────────────
@@ -393,10 +397,11 @@ const SessionsPage = (() => {
 
     document.addEventListener('touchmove', e => {
       if (!dragging) return;
+      e.preventDefault();
       const delta = Math.max(0, e.touches[0].clientY - startY);
       sheet.style.transform = `translateY(${delta * 0.88}px)`;
       if (backdrop) backdrop.style.opacity = (0.35 * (1 - Math.min(delta / 300, 1))).toString();
-    }, { passive: true });
+    }, { passive: false });
 
     document.addEventListener('touchend', e => {
       if (!dragging) return;
