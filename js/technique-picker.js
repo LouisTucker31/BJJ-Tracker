@@ -352,20 +352,46 @@ const TechniquePicker = (() => {
 
   // ─── Init ────────────────────────────────────────
   function init() {
-    // Add buttons
     const drilledBtn = document.getElementById('drilled-add-btn');
     const appliedBtn = document.getElementById('applied-add-btn');
-
     if (drilledBtn) drilledBtn.addEventListener('click', () => openPicker('drilled'));
     if (appliedBtn) appliedBtn.addEventListener('click', () => openPicker('applied'));
 
-    // Done button
     const doneBtn = document.getElementById('tech-picker-done');
     if (doneBtn) doneBtn.addEventListener('click', closePicker);
 
-    // Backdrop
     const backdrop = document.getElementById('tech-picker-backdrop');
     if (backdrop) backdrop.addEventListener('click', closePicker);
+
+    // Drag to dismiss
+    const handleArea = document.getElementById('tech-picker-panel');
+    if (handleArea) {
+      let startY = 0;
+      let startTime = 0;
+
+      handleArea.addEventListener('touchstart', e => {
+        if (e.target.closest('.tech-picker-list')) return; // don't interfere with list scroll
+        startY    = e.touches[0].clientY;
+        startTime = Date.now();
+      }, { passive: true });
+
+      handleArea.addEventListener('touchmove', e => {
+        if (e.target.closest('.tech-picker-list')) return;
+        const delta = e.touches[0].clientY - startY;
+        if (delta > 0) {
+          handleArea.style.transition = 'none';
+          handleArea.style.transform  = `translateY(${delta}px)`;
+        }
+      }, { passive: true });
+
+      handleArea.addEventListener('touchend', e => {
+        const delta    = e.changedTouches[0].clientY - startY;
+        const velocity = delta / (Date.now() - startTime);
+        handleArea.style.transition = '';
+        handleArea.style.transform  = '';
+        if (delta > 100 || velocity > 0.4) closePicker();
+      });
+    }
   }
 
   // ─── Reset ───────────────────────────────────────
