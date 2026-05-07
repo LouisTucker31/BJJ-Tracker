@@ -3,7 +3,7 @@
  * Caches the app shell for offline use.
  */
 
-const CACHE_NAME = 'bjj-app-v1';
+const CACHE_NAME = 'bjj-app-v2';
 
 const SHELL_ASSETS = [
   './',
