@@ -761,6 +761,16 @@
   color: var(--color-label-primary, #000);
 }
 
+.tech-tile.tech-tile--applied {
+  background: rgba(255, 59, 48, 0.06);
+  border: 1px solid rgba(255, 59, 48, 0.18);
+  color: #FF3B30;
+}
+
+.tech-tile.tech-tile--applied .tech-tile-remove {
+  color: rgba(255, 59, 48, 0.5);
+}
+
 .tech-tile-remove {
   background: none;
   border: none;

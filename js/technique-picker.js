@@ -363,32 +363,31 @@ const TechniquePicker = (() => {
     const backdrop = document.getElementById('tech-picker-backdrop');
     if (backdrop) backdrop.addEventListener('click', closePicker);
 
-    // Drag to dismiss
-    const handleArea = document.getElementById('tech-picker-panel');
-    if (handleArea) {
-      let startY = 0;
+    // Drag to dismiss — only on handle area, not the list
+    const panel      = document.getElementById('tech-picker-panel');
+    const handleArea = document.getElementById('tech-picker-handle-area');
+    if (panel && handleArea) {
+      let startY    = 0;
       let startTime = 0;
 
       handleArea.addEventListener('touchstart', e => {
-        if (e.target.closest('.tech-picker-list')) return; // don't interfere with list scroll
         startY    = e.touches[0].clientY;
         startTime = Date.now();
       }, { passive: true });
 
       handleArea.addEventListener('touchmove', e => {
-        if (e.target.closest('.tech-picker-list')) return;
         const delta = e.touches[0].clientY - startY;
         if (delta > 0) {
-          handleArea.style.transition = 'none';
-          handleArea.style.transform  = `translateY(${delta}px)`;
+          panel.style.transition = 'none';
+          panel.style.transform  = `translateY(${delta}px)`;
         }
       }, { passive: true });
 
       handleArea.addEventListener('touchend', e => {
         const delta    = e.changedTouches[0].clientY - startY;
         const velocity = delta / (Date.now() - startTime);
-        handleArea.style.transition = '';
-        handleArea.style.transform  = '';
+        panel.style.transition = '';
+        panel.style.transform  = '';
         if (delta > 100 || velocity > 0.4) closePicker();
       });
     }
